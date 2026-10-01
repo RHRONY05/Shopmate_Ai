@@ -1,0 +1,34 @@
+{
+  "name": "shopmate-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ShopMate AI (KitRoom) - Autonomous Football Kit Shopping & AI Stylist Platform",
+  "scripts": {
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,magenta\" --kill-others \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "build:backend": "npm run build --prefix backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "build": "npm run build:backend && npm run build:frontend",
+    "test:backend": "npm run test --prefix backend",
+    "test:frontend": "npm run test --prefix frontend",
+    "test": "npm run test:backend && npm run test:frontend",
+    "lint:backend": "npm run lint --prefix backend",
+    "lint:frontend": "npm run lint --prefix frontend",
+    "lint": "npm run lint:backend && npm run lint:frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  },
+  "keywords": [
+    "ecommerce",
+    "ai-agent",
+    "pgvector",
+    "redis",
+    "react19",
+    "express",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT"
+}
