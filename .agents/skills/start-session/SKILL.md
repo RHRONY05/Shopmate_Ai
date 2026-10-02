@@ -20,8 +20,7 @@ When the user triggers this skill (e.g., by typing `/start-session` or saying "s
      - **Confirmation Gate:** Pause after explaining each step and wait for user confirmation.
      - **Hands-on Terminal:** Never silently run Docker, migrations, or npm commands. Provide the command and ask the user to run it.
      - **The 80/20 Boundary Model:** Explicitly state what to know vs what rabbit holes to skip.
-3. Check `notes/` directory:
-   - Note which topic notes already exist (e.g., `01-typescript.md`, `02-redis.md`).
+     - **Note-Taking:** Notes are created ONLY on-demand when requested by the user, saved directly to `E:\Learning\My_tech_knowledgebase`.
 
 ---
 
@@ -46,7 +45,7 @@ Present a clean, high-yield briefing to the user in this exact markdown structur
 - **The 80/20 Boundary:**
   - **Zone 1 (Must Master):** [The essential 20% we will practice today]
   - **Zone 3 (Skip for now):** [Advanced rabbit holes we are deliberately ignoring]
-- **Note-Taking Target:** [e.g., Will record takeaways in `notes/01-typescript.md`]
+
 
 ---
 

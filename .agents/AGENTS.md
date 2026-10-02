@@ -54,10 +54,43 @@ Before introducing any concept, the agent MUST explicitly state three things:
 - End each lesson with 1-2 direct, practical code questions testing the core mechanics.
 - STOP and wait for the user's answer and confirmation before moving forward.
 
-### 4. Active Recall Index & Note-Taking
-- Maintain detailed notes in `notes/0X-[tool].md` following the 4-question template, ensuring the numbered topics in Section 3 match the topics list in `notes/topics.md` 1:1.
-- Maintain the quick-revision index in `notes/topics.md`: a clean list of topic bullet points per tool followed by a link to the detailed note, designed for Active Recall without seeing answers first.
-- **GitHub Link Integrity:** Always use GitHub-compatible relative paths (e.g., `[01-typescript.md](./01-typescript.md)`) for markdown links across `notes/` and `docs/`, never absolute `file:///` URIs.
+### 4. Note-Taking & Centralized Knowledge Base Standards
+- **On-Demand Only (Never Automatic):** The agent MUST NEVER automatically generate, update, or scaffold note files during coding or teaching steps. Notes are created ONLY when explicitly requested by the user.
+- **Centralized Knowledge Location:** When the user explicitly asks to record or save a note, write it directly to the user's centralized knowledge vault at `E:\Learning\My_tech_knowledgebase` under the appropriate topic domain (`backend/`, `typescript/`, `devops/`, `database/`, `frontend/`).
+- **Zero Local Project Pollution:** Do NOT create or maintain project-local `notes/` folders inside individual project repositories. Keep project repositories clean and dedicated solely to code and `docs/`.
+- **Short File Naming:** Use short, clean, descriptive filenames with underscores or short hyphens (e.g., `typescript_basics.md`, `tsconfig_concepts.md`). Never use long, convoluted names.
+- **The Mandatory 4-Section Note Structure:** Every detailed study note MUST strictly follow this exact order:
+  ```markdown
+  ---
+  tags: [topic, related]
+  last_reviewed: YYYY-MM-DD
+  related_notes: ["[[domain/other-note]]"]
+  ---
+
+  # [Title] — Production Cheat Sheet & Mental Model
+
+  ### 1. The Core Problem
+  *Why did standard JavaScript or traditional approaches fail? What runtime disaster or breakdown makes this tool necessary?*
+
+  ### 2. The Mental Model
+  *How does the data/code flow under the hood? (ASCII lifecycle diagram showing compilation vs runtime, or request/response path).*
+
+  ### 3. Detailed Topic Breakdown
+  *Numbered list of core production patterns with real code snippets, compiler diagnostics, and zero abstract metaphors.*
+
+  ### 4. Top Gotchas & Pitfalls to Avoid
+  *Top 2-3 silent failures, runtime bugs, or incorrect usages with wrong vs right comparisons.*
+  ```
+- **The Mandatory Master-Index (`00-active-recall/master-index.md`) Format:** Whenever a note is created or updated, update the master index with the exact **Quick Revision & Recall** list (numbered concept prompts allowing self-testing without seeing answers) and a clickable note link:
+  ```markdown
+  ### [Number]. [Topic Name]
+
+  #### Topics to Recall:
+  1. **[Concept Name]:** [1-sentence summary/prompt of the core mechanic].
+  2. **[Concept Name]:** [1-sentence summary/prompt of the core mechanic].
+
+  👉 **Detailed Study Note:** [[domain/subfolder/short_note_name|short_note_name.md]]
+  ```
 
 ---
 
