@@ -1,0 +1,226 @@
+// ShopMate AI - Prisma Schema
+// Single Source of Truth for Database Models & PostgreSQL pgvector Extension
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [pgvector(map: "vector")]
+}
+
+// -------------------------------------------------------------
+// ENUMS
+// -------------------------------------------------------------
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum KitType {
+  HOME
+  AWAY
+  THIRD
+  RETRO
+  GOALKEEPER
+}
+
+enum Era {
+  MODERN
+  RETRO
+}
+
+enum Size {
+  S
+  M
+  L
+  XL
+  XXL
+}
+
+enum CartStatus {
+  ACTIVE
+  CONVERTED
+  ABANDONED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  CANCELLED
+}
+
+// -------------------------------------------------------------
+// MODELS
+// -------------------------------------------------------------
+
+model User {
+  id           String   @id @default(uuid())
+  clerkId      String   @unique
+  email        String   @unique
+  name         String?
+  role         Role     @default(CUSTOMER)
+  favoriteClub String?
+  defaultSize  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  carts  Cart[]
+  orders Order[]
+
+  @@map("users")
+}
+
+model Club {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  league    String
+  country   String
+  logoUrl   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jerseys Jersey[]
+
+  @@index([league])
+  @@map("clubs")
+}
+
+model Jersey {
+  id          String   @id @default(uuid())
+  clubId      String
+  club        Club     @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  title       String
+  slug        String   @unique
+  description String   @db.Text
+  kitType     KitType
+  season      String // e.g., "2024/25", "1998/99"
+  era         Era      @default(MODERN)
+  basePrice   Decimal  @db.Decimal(10, 2)
+  isFeatured  Boolean  @default(false)
+  images      String[] // Array of image URLs
+  rating      Float    @default(5.0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  variants  JerseyVariant[]
+  embedding JerseyEmbedding?
+
+  @@index([clubId, kitType, season])
+  @@index([isFeatured])
+  @@map("jerseys")
+}
+
+model JerseyVariant {
+  id            String   @id @default(uuid())
+  jerseyId      String
+  jersey        Jersey   @relation(fields: [jerseyId], references: [id], onDelete: Cascade)
+  size          Size
+  stockQuantity Int      @default(0)
+  sku           String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+
+  @@unique([jerseyId, size])
+  @@map("jersey_variants")
+}
+
+model JerseyEmbedding {
+  id          String                     @id @default(uuid())
+  jerseyId    String                     @unique
+  jersey      Jersey                     @relation(fields: [jerseyId], references: [id], onDelete: Cascade)
+  embedding   Unsupported("vector(768)")
+  contentText String                     @db.Text
+  createdAt   DateTime                   @default(now())
+  updatedAt   DateTime                   @updatedAt
+
+  @@map("jersey_embeddings")
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String?
+  user      User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  sessionId String?    @unique
+  status    CartStatus @default(ACTIVE)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  items CartItem[]
+
+  @@index([userId])
+  @@map("carts")
+}
+
+model CartItem {
+  id              String        @id @default(uuid())
+  cartId          String
+  cart            Cart          @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  jerseyVariantId String
+  jerseyVariant   JerseyVariant @relation(fields: [jerseyVariantId], references: [id], onDelete: Cascade)
+  quantity        Int           @default(1)
+  customName      String?
+  customNumber    Int?
+  sleeveBadge     String?
+  unitPrice       Decimal       @db.Decimal(10, 2)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([cartId, jerseyVariantId, customName, customNumber, sleeveBadge])
+  @@map("cart_items")
+}
+
+model Order {
+  id                    String      @id @default(uuid())
+  orderNumber           String      @unique
+  userId                String?
+  user                  User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  guestEmail            String?
+  status                OrderStatus @default(PENDING)
+  totalAmount           Decimal     @db.Decimal(10, 2)
+  stripePaymentIntentId String?     @unique
+  shippingAddress       Json?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  items OrderItem[]
+
+  @@index([userId])
+  @@index([status])
+  @@map("orders")
+}
+
+model OrderItem {
+  id              String        @id @default(uuid())
+  orderId         String
+  order           Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  jerseyVariantId String
+  jerseyVariant   JerseyVariant @relation(fields: [jerseyVariantId], references: [id])
+  quantity        Int
+  customName      String?
+  customNumber    Int?
+  sleeveBadge     String?
+  priceAtPurchase Decimal       @db.Decimal(10, 2)
+  createdAt       DateTime      @default(now())
+
+  @@map("order_items")
+}
+
+model ProcessedWebhookEvent {
+  id          String   @id @default(uuid())
+  eventId     String   @unique
+  eventType   String
+  source      String // "STRIPE" | "CLERK"
+  processedAt DateTime @default(now())
+
+  @@map("processed_webhook_events")
+}

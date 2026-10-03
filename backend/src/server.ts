@@ -1,6 +1,6 @@
 import app from './app.js';
 import { config } from './config/env.js';
-import { checkDatabaseConnection } from './config/db.js';
+import { checkDatabaseConnection } from './config/prisma.js';
 import { checkRedisConnection } from './config/redis.js';
 import logger from './utils/logger.js';
 

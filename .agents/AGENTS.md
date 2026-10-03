@@ -18,6 +18,7 @@ These rules apply to any AI agent interacting with this workspace.
 - **Git Branch:** The default/primary branch is always `main`, not `master`.
 - **No Console.log:** Use structured logging (Pino or equivalent) in production code. `console.log` is only acceptable in throwaway debug sessions.
 - **Environment Variables:** Never hardcode secrets, API keys, or connection strings. Always use `.env` files and `process.env`.
+- **Strict Formatting Invariant (Zero LaTeX / Zero Dollar-Sign Math):** NEVER use LaTeX or dollar sign math syntax (`$` or `$$`) under any circumstance. Never write `$N$`, `$O(...)`, `\cos`, `\theta`, or `$$...$$`. Write all math, complexity, and variables in plain English (e.g., `O(log N)`, `N items`, `1 - Cosine Similarity`, `98 percent`).
 
 ### Frontend Standards
 - **State Management:** Use **Redux Toolkit (RTK)** with typed hooks (`useAppDispatch`, `useAppSelector`) and `createSlice` for predictable global client state.
@@ -48,6 +49,12 @@ Before introducing any concept, the agent MUST explicitly state three things:
 - **Zero Abstract Analogies:** Never use vague metaphors (no construction sites, whiteboards, filing cabinets, etc.). Teach directly with real code.
 - **Where & How It Is Used:** Show actual production code (controllers, models, queries, or utilities) demonstrating where this exact pattern lives in a project.
 - **Line-by-Line Mechanics:** Explain step-by-step what happens in the code, what compiler diagnostics or runtime engines do, and why standard JS/DB approaches fail.
+- **Function-First Delivery for Beginners:** Explain every new tool, service, or database index strictly through the 4-part Function Model:
+  1. What are we using?
+  2. What is it for?
+  3. What is the Input?
+  4. What is the Output / Result?
+  Avoid heavy theoretical mathematical proofs, internal graph topology abstractions, or Big-O proofs unless explicitly requested.
 - **Strict Pacing:** Deliver concepts one at a time. Never dump multiple unrelated sub-topics in a single turn.
 
 ### 3. Check for Understanding (Confirmation Gate)
@@ -59,6 +66,7 @@ Before introducing any concept, the agent MUST explicitly state three things:
 - **Centralized Knowledge Location:** When the user explicitly asks to record or save a note, write it directly to the user's centralized knowledge vault at `E:\Learning\My_tech_knowledgebase` under the appropriate topic domain (`backend/`, `typescript/`, `devops/`, `database/`, `frontend/`).
 - **Zero Local Project Pollution:** Do NOT create or maintain project-local `notes/` folders inside individual project repositories. Keep project repositories clean and dedicated solely to code and `docs/`.
 - **Short File Naming:** Use short, clean, descriptive filenames with underscores or short hyphens (e.g., `typescript_basics.md`, `tsconfig_concepts.md`). Never use long, convoluted names.
+- **100% Concept-Pure & Project-Agnostic:** Notes in `E:\Learning\My_tech_knowledgebase` must NEVER be tied to or reference any specific project, client, or repository (e.g., no project names, specific app entities like jerseys, or project milestones). Notes must focus purely on timeless engineering concepts, architecture, mental models, and production patterns. Generic, illustrative examples (e.g., documents, items, users) are welcome, but the knowledge must remain a clean, permanent reference applicable to any future codebase.
 - **The Mandatory 4-Section Note Structure:** Every detailed study note MUST strictly follow this exact order:
   ```markdown
   ---

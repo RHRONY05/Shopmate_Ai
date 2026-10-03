@@ -1,9 +1,9 @@
 # ShopMate AI — Project Progress & Learning Tracker
 
 > **Current Project Status**  
-> **Current Phase:** Phase 2 — Database Architecture, Prisma ORM & Seed Data  
-> **Last Completed Action:** Module 1.6 — Setup Frontend React 19 + Vite + TypeScript with Tailwind CSS and Redux Toolkit scaffolding complete  
-> **Next Immediate Action:** Module 2.1 — Prisma ORM Deep-Dive: Learn Prisma vs traditional SQL queries, configure PostgreSQL connection and enable pgvector extension
+> **Current Phase:** Phase 3 — Backend Core Modules (Vertical Slices & Testing)  
+> **Last Completed Action:** Module 2.6 — Verify vector cosine index (HNSW) and query latency in PostgreSQL (1.37ms execution time)  
+> **Next Immediate Action:** Module 3.1 — Build Catalog Vertical Slice (GET /api/clubs, GET /api/jerseys with faceted filtering, GET /api/jerseys/:slug) + Jest/Supertest tests (In Progress)  
 
 ---
 
@@ -36,19 +36,19 @@
 ## Phase 2: Database Architecture, Prisma ORM & Seed Data
 *What You'll Learn: Prisma migrations, relational database design, and pgvector cosine embeddings.*
 
-- [ ] 2.1 **Prisma ORM Deep-Dive:** Learn Prisma vs traditional SQL queries, configure PostgreSQL connection and enable `pgvector` extension
-- [ ] 2.2 Define database schema models (`User`, `Club`, `Jersey`, `JerseyVariant`, `JerseyEmbedding`, `Cart`, `CartItem`, `Order`, `OrderItem`)
-- [ ] 2.3 Run database migrations and generate typed Prisma Client
-- [ ] 2.4 Build realistic football kit seed script (20+ kits across EPL, La Liga, Serie A, Retro classic kits, and sizes S-XXL)
-- [ ] 2.5 **pgvector & Embeddings Deep-Dive:** Learn what a 768-dimension embedding vector represents, generate embeddings using Gemini API, and store in `JerseyEmbedding`
-- [ ] 2.6 Verify vector cosine index (`HNSW`) and query latency in PostgreSQL
+- [x] 2.1 **Prisma ORM Deep-Dive:** Learn Prisma vs traditional SQL queries, configure PostgreSQL connection and enable `pgvector` extension
+- [x] 2.2 Define database schema models (`User`, `Club`, `Jersey`, `JerseyVariant`, `JerseyEmbedding`, `Cart`, `CartItem`, `Order`, `OrderItem`)
+- [x] 2.3 Run database migrations and generate typed Prisma Client
+- [x] 2.4 Build realistic football kit seed script (20+ kits across EPL, La Liga, Serie A, Retro classic kits, and sizes S-XXL)
+- [x] 2.5 **pgvector & Embeddings Deep-Dive:** Learn what a 768-dimension embedding vector represents, generate embeddings using Gemini API, and store in `JerseyEmbedding`
+- [x] 2.6 Verify vector cosine index (`HNSW`) and query latency in PostgreSQL
 
 ---
 
 ## Phase 3: Backend Core Modules (Vertical Slices & Testing)
 *What You'll Learn: Clean Architecture, Clerk Auth session handling, Stripe PaymentIntents, Webhook signatures, and atomic row-locks.*
 
-- [ ] 3.1 Build Catalog Vertical Slice (`GET /api/clubs`, `GET /api/jerseys` with faceted filtering, `GET /api/jerseys/:slug`) + Jest/Supertest tests
+- [/] 3.1 Build Catalog Vertical Slice (`GET /api/clubs`, `GET /api/jerseys` with faceted filtering, `GET /api/jerseys/:slug`) + Jest/Supertest tests
 - [ ] 3.2 Build Cart Vertical Slice (Session & authenticated cart persistence, inventory check, custom printing addons) + tests
 - [ ] 3.3 **Clerk Auth Deep-Dive:** Learn how third-party auth tokens flow to Express, verify Bearer tokens, build user sync webhook + tests
 - [ ] 3.4 **Stripe Architecture Deep-Dive:** Learn the Client vs Server trust model, implement `POST /api/payments/create-intent` with server-calculated price verification + tests
