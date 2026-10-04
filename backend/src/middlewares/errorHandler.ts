@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import { ZodError } from 'zod';
 import { ApiError } from '../utils/ApiError.js';
 import logger from '../utils/logger.js';
 import { config } from '../config/env.js';
@@ -11,7 +12,10 @@ export const errorHandler: ErrorRequestHandler = (
 ): void => {
   let error = err;
 
-  if (!(error instanceof ApiError)) {
+  if (err instanceof ZodError) {
+    const errorDetails = err.issues.map((issue) => `${issue.path.join('.') || 'param'}: ${issue.message}`);
+    error = new ApiError(400, 'Validation Error: Invalid request parameters', errorDetails, err.stack);
+  } else if (!(error instanceof ApiError)) {
     const statusCode = 'statusCode' in error && typeof error.statusCode === 'number' ? error.statusCode : 500;
     const message = error.message || 'Internal Server Error';
     error = new ApiError(statusCode, message, [], err.stack);

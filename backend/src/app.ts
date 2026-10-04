@@ -3,6 +3,7 @@ import { responseBodyCapture, loggerMiddleware } from './middlewares/loggerMiddl
 import { errorHandler } from './middlewares/errorHandler.js';
 import { ApiResponse } from './utils/ApiResponse.js';
 import { ApiError } from './utils/ApiError.js';
+import catalogRouter from './modules/catalog/catalog.routes.js';
 
 const app = express();
 
@@ -35,6 +36,9 @@ app.get('/api/test-error', () => {
     'Example validation detail: missing field',
   ]);
 });
+
+// Domain Vertical Slice Routes
+app.use('/api', catalogRouter);
 
 // 404 Route Handler
 app.use((req, _res, next) => {
