@@ -8,6 +8,7 @@ import { config } from './config/env.js';
 import catalogRouter from './modules/catalog/catalog.routes.js';
 import cartRouter from './modules/cart/cart.routes.js';
 import authRouter from './modules/auth/auth.routes.js';
+import paymentRouter from './modules/payments/payment.routes.js';
 
 const app = express();
 
@@ -66,6 +67,7 @@ app.get('/api/test-error', () => {
 app.use('/api', catalogRouter);
 app.use('/api', cartRouter);
 app.use('/api', authRouter);
+app.use('/api', paymentRouter);
 
 // 404 Route Handler
 app.use((req, _res, next) => {
