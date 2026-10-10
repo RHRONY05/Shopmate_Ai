@@ -77,7 +77,7 @@ export class CartService {
       if (!guestCart || guestCart.status !== 'ACTIVE') {
         guestCart = await prisma.cart.create({
           data: {
-            sessionId: randomUUID(),
+            sessionId: sessionId || randomUUID(),
             status: 'ACTIVE',
           },
           include: cartIncludeQuery,

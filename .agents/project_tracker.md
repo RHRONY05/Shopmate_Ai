@@ -1,9 +1,10 @@
 # ShopMate AI — Project Progress & Learning Tracker
 
 > **Current Project Status**  
-> **Current Phase:** Phase 4 — AI Shopping Agent Engine (pgvector, Function Calling & SSE Streaming)  
-> **Last Completed Action:** Module 3.5 — Webhook Idempotency & Database Locks (Stripe webhook listener, atomic inventory decrement, row-locks, order creation) + automated Vitest/Supertest test suite (10 passing tests, 50 total). Phase 3 is 100% complete!  
-> **Next Immediate Action:** Module 4.1 — Implement pgvector Semantic Search Service with parameterized cosine distance (<=>) queries  
+> **Current Phase:** Phase 5 — Frontend Design System & Redux Toolkit Shell  
+> **Last Completed Action:** Phase 4 Complete — AI Shopping Agent Engine (pgvector semantic search, 4 Zod tools, Redis multi-turn session memory, SSE streaming endpoint `POST /api/ai/chat`) with 67 passing tests. All Backend APIs (Catalog, Cart, Auth, Stripe, pgvector, AI) 100% finished and verified!  
+> **Active Action (In Progress):** Module 5.1 — Establish kitroom design tokens in `index.css` (athletic dark/light palettes, pitch-green accents, typography tokens)  
+> **Next Immediate Action:** Module 5.2 — Redux Toolkit Setup (`cartSlice`, `copilotSlice`, typed hooks)  
 
 ---
 
@@ -59,11 +60,11 @@
 ## Phase 4: AI Shopping Agent Engine (pgvector, Function Calling & SSE Streaming)
 *What You'll Learn: LLM Function Calling mechanics, Server-Sent Events (SSE) streaming vs WebSockets, and Redis session memory.*
 
-- [ ] 4.1 Implement `pgvector` Semantic Search Service with parameterized cosine distance (`<=>`) queries
-- [ ] 4.2 **AI Function Calling Deep-Dive:** Learn how LLMs trigger external tools with Zod schema validation (`search_jerseys`, `add_to_cart`, `get_cart_summary`, `recommend_size`)
-- [ ] 4.3 **SSE Streaming Deep-Dive:** Learn why SSE is used over WebSockets for AI chat, implement streaming controller (`POST /api/ai/chat`)
-- [ ] 4.4 **Redis in Action:** Wire LLM tool execution loop with Redis multi-turn session conversation memory and TTL expiration
-- [ ] 4.5 Write comprehensive integration tests for AI agent tool execution and streaming response
+- [x] 4.1 Implement `pgvector` Semantic Search Service with parameterized cosine distance (`<=>`) queries
+- [x] 4.2 **AI Function Calling Deep-Dive:** Learn how LLMs trigger external tools with Zod schema validation (`search_jerseys`, `add_to_cart`, `get_cart_summary`, `recommend_size`)
+- [x] 4.3 **SSE Streaming Deep-Dive:** Learn why SSE is used over WebSockets for AI chat, implement streaming controller (`POST /api/ai/chat`)
+- [x] 4.4 **Redis in Action:** Wire LLM tool execution loop with Redis multi-turn session conversation memory and TTL expiration
+- [x] 4.5 Write comprehensive integration tests for AI agent tool execution and streaming response
 
 ---
 

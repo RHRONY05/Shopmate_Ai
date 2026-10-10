@@ -17,7 +17,7 @@ async function testSemanticSearch() {
 
   for (const query of testQueries) {
     console.log(`🔍 Customer Query: "${query}"`);
-    const results = await EmbeddingService.findSimilarJerseys(query, 2);
+    const results = await EmbeddingService.findSimilarJerseys(query, { limit: 2 });
 
     results.forEach((match, index) => {
       const percentage = (match.similarity * 100).toFixed(1);

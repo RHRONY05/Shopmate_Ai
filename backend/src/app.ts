@@ -9,6 +9,8 @@ import catalogRouter from './modules/catalog/catalog.routes.js';
 import cartRouter from './modules/cart/cart.routes.js';
 import authRouter from './modules/auth/auth.routes.js';
 import paymentRouter from './modules/payments/payment.routes.js';
+import searchRouter from './modules/search/search.routes.js';
+import aiRouter from './modules/ai/ai.routes.js';
 
 const app = express();
 
@@ -68,6 +70,8 @@ app.use('/api', catalogRouter);
 app.use('/api', cartRouter);
 app.use('/api', authRouter);
 app.use('/api', paymentRouter);
+app.use('/api', searchRouter);
+app.use('/api', aiRouter);
 
 // 404 Route Handler
 app.use((req, _res, next) => {
