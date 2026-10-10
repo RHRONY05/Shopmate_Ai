@@ -16,6 +16,7 @@ interface Config {
   clerk: {
     secretKey: string;
     publishableKey: string;
+    webhookSecret: string;
   };
 }
 
@@ -39,6 +40,7 @@ export const config: Config = {
   },
   clerk: {
     secretKey: process.env.CLERK_SECRET_KEY || '',
-    publishableKey: process.env.CLERK_PUBLISHABLE_KEY || '',
+    publishableKey: process.env.CLERK_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || '',
+    webhookSecret: process.env.CLERK_WEBHOOK_SECRET || '',
   },
 };

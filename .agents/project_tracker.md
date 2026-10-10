@@ -2,8 +2,8 @@
 
 > **Current Project Status**  
 > **Current Phase:** Phase 3 — Backend Core Modules (Vertical Slices & Testing)  
-> **Last Completed Action:** Module 3.1 — Build Catalog Vertical Slice (GET /api/clubs, GET /api/jerseys with faceted filtering, GET /api/jerseys/:slug) + automated Vitest/Supertest test suite (9 passing tests)  
-> **Next Immediate Action:** Module 3.2 — Build Cart Vertical Slice (Session & authenticated cart persistence, inventory check, custom printing addons) + tests  
+> **Last Completed Action:** Module 3.3 — Clerk Auth Deep-Dive (Bearer token validation, user sync webhook, Svix signature verification) + automated Vitest/Supertest test suite (12 passing tests, 40 total)  
+> **Next Immediate Action:** Module 3.4 — Stripe Architecture Deep-Dive (Client vs Server trust model, POST /api/payments/create-intent with server-calculated price verification) + tests  
 
 ---
 
@@ -49,8 +49,8 @@
 *What You'll Learn: Clean Architecture, Clerk Auth session handling, Stripe PaymentIntents, Webhook signatures, and atomic row-locks.*
 
 - [x] 3.1 Build Catalog Vertical Slice (`GET /api/clubs`, `GET /api/jerseys` with faceted filtering, `GET /api/jerseys/:slug`) + Jest/Supertest tests
-- [ ] 3.2 Build Cart Vertical Slice (Session & authenticated cart persistence, inventory check, custom printing addons) + tests
-- [ ] 3.3 **Clerk Auth Deep-Dive:** Learn how third-party auth tokens flow to Express, verify Bearer tokens, build user sync webhook + tests
+- [x] 3.2 Build Cart Vertical Slice (Session & authenticated cart persistence, inventory check, custom printing addons) + tests
+- [x] 3.3 **Clerk Auth Deep-Dive:** Learn how third-party auth tokens flow to Express, verify Bearer tokens, build user sync webhook + tests
 - [ ] 3.4 **Stripe Architecture Deep-Dive:** Learn the Client vs Server trust model, implement `POST /api/payments/create-intent` with server-calculated price verification + tests
 - [ ] 3.5 **Webhook Idempotency & Database Locks:** Build Stripe webhook listener with atomic inventory decrement, row-locks (`BEGIN...COMMIT`), and idempotency checks + tests
 
