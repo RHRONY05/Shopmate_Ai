@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S1 · Storefront Home — ShopMate AI</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../kit.css">
+<script>/* the canvas passes ?theme=dark */(function(){var t=new URLSearchParams(location.search).get("theme");if(t)document.documentElement.dataset.theme=t;})();</script>
+<style>
+  /* Layout for S1 Phone Storefront */
+  .screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding: var(--space-3) var(--space-4) calc(var(--space-20) + env(safe-area-inset-bottom));
+  }
+  .hero-banner {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-1);
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+  }
+  .hero-content {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .scroller {
+    display: flex;
+    gap: var(--space-2);
+    overflow-x: auto;
+    padding-bottom: var(--space-1);
+    scrollbar-width: none;
+  }
+  .scroller::-webkit-scrollbar { display: none; }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  .section-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-2);
+  }
+  .badge-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .link-action {
+    color: var(--btn-hover);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+    padding: 0 var(--space-1);
+  }
+  [data-theme="dark"] .link-action {
+    color: var(--accent-primary);
+  }
+</style>
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div style="display:flex; align-items:center; gap:var(--space-2); flex:1">
+      <div style="width:32px; height:32px; border-radius:var(--radius-sm); background:var(--accent-primary); color:var(--btn-text); display:grid; place-items:center">
+        <i data-lucide="shield" aria-hidden="true"></i>
+      </div>
+      <div>
+        <span class="t-eyebrow" style="font-size:var(--text-xs); display:block; line-height:1">KitRoom Edition</span>
+        <span class="t-title" style="font-size:var(--text-base); line-height:1.1">ShopMate AI</span>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:var(--space-1)">
+      <button type="button" class="btn btn--icon btn--ghost" aria-label="Search catalog">
+        <i data-lucide="search" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="btn btn--icon btn--ghost" aria-label="Voice search">
+        <i data-lucide="mic" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="btn btn--icon btn--ghost" aria-label="Shopping bag">
+        <i data-lucide="shopping-bag" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="screen">
+    <!-- Hero Spotlight Section -->
+    <section class="hero-banner">
+      <div class="ph hero-img">Atmospheric Photo — Highbury Floodlights & Matchday Kickoff · 4:3</div>
+      <div class="hero-content">
+        <div class="badge-row">
+          <span class="badge badge--info"><i data-lucide="sparkles" aria-hidden="true"></i> Official Drop</span>
+          <span class="badge badge--success">2024/25 Season</span>
+        </div>
+        <h1 class="t-display" style="font-size:var(--text-3xl)">Centenary Matchday Kits</h1>
+        <p class="t-meta">Official player edition jacquard jerseys with authentic heat-sealed crests and custom player squad printing.</p>
+        
+        <div>
+          <button type="button" class="btn btn--primary btn--block">
+            <span>Explore European Kits</span>
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Voice AI Assistant Bar -->
+    <section>
+      <button type="button" class="voice-pill" style="width:100%; justify-content:space-between">
+        <div style="display:flex; align-items:center; gap:var(--space-2)">
+          <span class="voice-pill-mic"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+          <span class="t-body" style="font-size:var(--text-sm)">"Find Arsenal 1998 retro away in size L"</span>
+        </div>
+        <i data-lucide="mic" style="color:var(--accent-primary)" aria-hidden="true"></i>
+      </button>
+    </section>
+
+    <!-- League Selector Scroller -->
+    <section>
+      <div class="section-title-row">
+        <h2 class="t-title" style="font-size:var(--text-lg)">Browse by League</h2>
+        <span class="t-meta" style="font-size:var(--text-xs)">6 Leagues</span>
+      </div>
+      <div class="scroller" data-scroll-x="true">
+        <button type="button" class="chip chip--on" aria-pressed="true">All Leagues</button>
+        <button type="button" class="chip" aria-pressed="false">Premier League</button>
+        <button type="button" class="chip" aria-pressed="false">La Liga</button>
+        <button type="button" class="chip" aria-pressed="false">Serie A</button>
+        <button type="button" class="chip" aria-pressed="false">Retro Classics</button>
+      </div>
+    </section>
+
+    <!-- Trending Kit Drops -->
+    <section>
+      <div class="section-title-row">
+        <h2 class="t-title" style="font-size:var(--text-lg)">Trending Matchday Drops</h2>
+        <a href="catalog.html" class="t-meta link-action">View All ↗</a>
+      </div>
+
+      <div class="grid-2">
+        <!-- Kit 1 -->
+        <article class="kit-card">
+          <div class="ph kit-card-img">Photo — Arsenal 2024/25 Authentic Home Kit · 3:4</div>
+          <div>
+            <span class="t-eyebrow">Arsenal FC · Premier League</span>
+            <h3 class="t-title" style="font-size:var(--text-lg); margin-top:var(--space-1)">2024/25 Authentic Home Kit</h3>
+            <div class="row" style="justify-content:space-between; padding:var(--space-1) 0">
+              <span class="num t-title" style="color:var(--text-primary)">85.00 USD</span>
+              <span class="badge badge--success">In Stock (8 left)</span>
+            </div>
+          </div>
+          <div class="row-wrap" style="gap:var(--space-1)">
+            <button type="button" class="size-pill">S</button>
+            <button type="button" class="size-pill">M</button>
+            <button type="button" class="size-pill size-pill--selected" aria-selected="true">L</button>
+            <button type="button" class="size-pill">XL</button>
+            <button type="button" class="size-pill size-pill--disabled" disabled>XXL</button>
+          </div>
+          <button type="button" class="btn btn--primary btn--block">
+            <i data-lucide="shopping-bag" aria-hidden="true"></i>
+            <span>Add to Bag (85.00 USD)</span>
+          </button>
+        </article>
+
+        <!-- Kit 2 -->
+        <article class="kit-card">
+          <div class="ph kit-card-img">Photo — Real Madrid 2024/25 European Champions Kit · 3:4</div>
+          <div>
+            <span class="t-eyebrow">Real Madrid · La Liga</span>
+            <h3 class="t-title" style="font-size:var(--text-lg); margin-top:var(--space-1)">European Champions Edition</h3>
+            <div class="row" style="justify-content:space-between; padding:var(--space-1) 0">
+              <span class="num t-title" style="color:var(--text-primary)">90.00 USD</span>
+              <span class="badge badge--warning">Low Stock (2 left)</span>
+            </div>
+          </div>
+          <div class="row-wrap" style="gap:var(--space-1)">
+            <button type="button" class="size-pill">S</button>
+            <button type="button" class="size-pill size-pill--selected" aria-selected="true">M</button>
+            <button type="button" class="size-pill">L</button>
+            <button type="button" class="size-pill">XL</button>
+            <button type="button" class="size-pill size-pill--disabled" disabled>XXL</button>
+          </div>
+          <button type="button" class="btn btn--primary btn--block">
+            <i data-lucide="shopping-bag" aria-hidden="true"></i>
+            <span>Add to Bag (90.00 USD)</span>
+          </button>
+        </article>
+      </div>
+    </section>
+
+    <!-- Signature Element: Authentication Ticket Banner -->
+    <section>
+      <div class="auth-ticket">
+        <div class="auth-ticket-header">
+          <span class="t-eyebrow">Kitroom Vault Guarantee</span>
+          <span class="auth-ticket-stamp">100% Certified</span>
+        </div>
+        <div class="auth-ticket-body">
+          <div>
+            <span class="auth-ticket-meta">Official Club Edition</span>
+            <div class="auth-ticket-squad" style="font-size:var(--text-xl)">HEAT-SEALED BADGE PASS</div>
+          </div>
+          <i data-lucide="award" style="width:32px; height:32px; color:var(--accent-primary)" aria-hidden="true"></i>
+        </div>
+        <div class="auth-ticket-meta">Turnstile Cert #KT-2024-8891 · Includes Official Player Printing Guarantee</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="nav-bottom" aria-label="Mobile Navigation">
+    <a href="home.html" aria-current="page">
+      <i data-lucide="home" aria-hidden="true"></i>
+      <span>Home</span>
+    </a>
+    <a href="catalog.html">
+      <i data-lucide="compass" aria-hidden="true"></i>
+      <span>Catalog</span>
+    </a>
+    <a href="../drawers/copilot-drawer.html">
+      <i data-lucide="sparkles" aria-hidden="true"></i>
+      <span>KitBot</span>
+    </a>
+    <a href="cart.html">
+      <i data-lucide="shopping-bag" aria-hidden="true"></i>
+      <span>Bag (1)</span>
+    </a>
+  </nav>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

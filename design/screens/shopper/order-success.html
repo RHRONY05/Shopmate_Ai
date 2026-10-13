@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S6 · Order Success & Holographic Certificate (Phone) — ShopMate AI</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../kit.css">
+<script>/* the canvas passes ?theme=dark */(function(){var t=new URLSearchParams(location.search).get("theme");if(t)document.documentElement.dataset.theme=t;})();</script>
+<style>
+  .screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4) calc(var(--space-12) + env(safe-area-inset-bottom));
+  }
+  .celebration-hero {
+    text-align: center;
+    padding: var(--space-5) var(--space-3);
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .success-ring {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-pill);
+    background: var(--bg-card-hover);
+    border: 2px solid var(--accent-primary);
+    display: grid;
+    place-items: center;
+    color: var(--accent-primary);
+    margin-bottom: var(--space-1);
+  }
+  .order-number-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    color: var(--accent-primary);
+  }
+  .section-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    box-shadow: var(--shadow-1);
+  }
+  .timeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    position: relative;
+    padding-left: var(--space-6);
+  }
+  .timeline-list::before {
+    content: "";
+    position: absolute;
+    top: var(--space-2);
+    bottom: var(--space-2);
+    left: var(--space-2);
+    width: 2px;
+    background: var(--border-subtle);
+  }
+  .timeline-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .timeline-dot {
+    position: absolute;
+    left: calc(var(--space-5) * -1);
+    top: var(--space-1);
+    width: 14px;
+    height: 14px;
+    border-radius: var(--radius-pill);
+    background: var(--bg-surface);
+    border: 2px solid var(--border-subtle);
+    z-index: 1;
+  }
+  .timeline-item--done .timeline-dot {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+  }
+  .timeline-item--active .timeline-dot {
+    background: var(--bg-surface);
+    border-color: var(--accent-primary);
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+  }
+  .holo-foil {
+    background: var(--bg-card-hover);
+    border: 1px dashed var(--accent-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+  }
+  .qr-box {
+    width: 64px;
+    height: 64px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.05em;
+    flex-shrink: 0;
+  }
+  .item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: var(--space-2);
+    border-bottom: 1px dashed var(--border-subtle);
+  }
+  .item-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--text-sm);
+  }
+  .action-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .action-stack .btn {
+    width: 100%;
+    min-height: var(--touch-min);
+  }
+</style>
+</head>
+<body>
+<div class="screen" id="artboard-s6-phone">
+
+  <!-- Top Navigation Header -->
+  <header style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-2) 0;">
+    <a href="home.html" class="btn btn--secondary btn--icon" aria-label="Return to Storefront" style="min-width: var(--touch-min); min-height: var(--touch-min);">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </a>
+    <div style="display: flex; align-items: center; gap: var(--space-2);">
+      <div style="width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--accent-primary); color: var(--btn-text); display: grid; place-items: center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <span class="t-display" style="font-size: var(--text-base); font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide);">SHOPMATE AI</span>
+    </div>
+    <span class="badge badge--success" style="font-size: var(--text-xs);">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      Verified
+    </span>
+  </header>
+
+  <!-- Celebratory Hero -->
+  <section class="celebration-hero">
+    <div class="success-ring">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    </div>
+    <h1 class="t-display" style="font-size: var(--text-2xl); font-weight: var(--weight-bold); margin: 0; line-height: var(--leading-tight);">
+      MATCHDAY SECURED
+    </h1>
+    <p style="font-size: var(--text-sm); color: var(--text-secondary); margin: 0; max-width: 320px; line-height: var(--leading-normal);">
+      Payment of <strong>195.00 USD</strong> confirmed via Stripe. Your authentic jerseys are locked in the kitroom vault.
+    </p>
+    <div class="order-number-chip">
+      <span>ORDER NUMBER:</span>
+      <strong>#KT-2024-8891</strong>
+    </div>
+  </section>
+
+  <!-- Signature Turnstile Certificate Stub -->
+  <section class="auth-ticket">
+    <div class="auth-ticket__header">
+      <div style="display: flex; align-items: center; gap: var(--space-2);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" color="var(--accent-primary)">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span class="auth-ticket__title">OFFICIAL MATCHDAY CERTIFICATE</span>
+      </div>
+      <span class="auth-ticket__cert">CRYPTOGRAPHIC SEAL</span>
+    </div>
+
+    <!-- Holographic Security Foil -->
+    <div class="holo-foil">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3);">
+        <div style="display: flex; flex-direction: column; gap: var(--space-1);">
+          <span style="font-family: var(--font-mono); font-size: var(--text-xs); font-weight: var(--weight-bold); color: var(--text-primary); letter-spacing: var(--tracking-wide);">
+            CERTIFICATE ID: #KT-CERT-8891-VLT
+          </span>
+          <span style="font-family: var(--font-display); font-size: var(--text-sm); font-weight: var(--weight-bold);">
+            Arsenal FC · Authentic Home 2024/25
+          </span>
+          <span style="font-size: var(--text-xs); color: var(--text-secondary);">
+            Personalization: <strong>BUKAYO SAKA #07</strong> · Official Premier League Badge
+          </span>
+        </div>
+        <div class="qr-box">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+            <rect x="15" y="15" width="2" height="2"/>
+            <rect x="18" y="18" width="3" height="3"/>
+          </svg>
+        </div>
+      </div>
+      <div style="margin-top: var(--space-2); pt-1; border-top: 1px dashed var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);">
+        <span>SHA-256: 7f8a91b...34c90e</span>
+        <span>ISSUED: 14 OCT 2026</span>
+      </div>
+    </div>
+
+    <div class="auth-ticket__body">
+      <div class="auth-ticket__spec">
+        <span class="auth-ticket__spec-label">VAULT REGISTRY</span>
+        <span class="auth-ticket__spec-val">LONDON N5 / STAND 04</span>
+      </div>
+      <div class="auth-ticket__spec">
+        <span class="auth-ticket__spec-label">STAMP STATUS</span>
+        <span class="auth-ticket__spec-val" style="color: var(--accent-primary); font-weight: var(--weight-bold);">VERIFIED ORIGINAL</span>
+      </div>
+      <div class="auth-ticket__spec">
+        <span class="auth-ticket__spec-label">FABRIC AUTH</span>
+        <span class="auth-ticket__spec-val">AEROREADY 100% PRO</span>
+      </div>
+      <div class="auth-ticket__spec">
+        <span class="auth-ticket__spec-label">BLOCKCHAIN ROOT</span>
+        <span class="auth-ticket__spec-val">BLOCK #1948201</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Fulfillment & Delivery Timeline -->
+  <section class="section-card">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <h2 class="t-display" style="font-size: var(--text-base); font-weight: var(--weight-bold); margin: 0;">
+        DELIVERY TIMELINE
+      </h2>
+      <span class="badge badge--success" style="font-size: var(--text-xs);">Tracked Courier</span>
+    </div>
+
+    <div class="timeline-list">
+      <!-- Step 1: Placed -->
+      <div class="timeline-item timeline-item--done">
+        <div class="timeline-dot"></div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <strong style="font-size: var(--text-sm);">1. Order Confirmed & Secured</strong>
+          <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);">01:58 UTC</span>
+        </div>
+        <span style="font-size: var(--text-xs); color: var(--text-secondary);">Stripe authorization successful. Cryptographic certificate generated.</span>
+      </div>
+
+      <!-- Step 2: Customization (Active) -->
+      <div class="timeline-item timeline-item--active">
+        <div class="timeline-dot"></div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <strong style="font-size: var(--text-sm); color: var(--accent-primary);">2. Vault Pressing & Squad Badge Heat-Set</strong>
+          <span class="badge badge--info" style="font-size: var(--text-xs);">In Progress</span>
+        </div>
+        <span style="font-size: var(--text-xs); color: var(--text-secondary);">Bukayo Saka #07 print and Premier League badge application in London Kitroom.</span>
+      </div>
+
+      <!-- Step 3: Courier Dispatch -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <strong style="font-size: var(--text-sm); color: var(--text-muted);">3. Royal Mail Tracked Dispatch</strong>
+          <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);">Est. Tomorrow</span>
+        </div>
+        <span style="font-size: var(--text-xs); color: var(--text-muted);">Secure sealed dispatch with proof of signature required.</span>
+      </div>
+
+      <!-- Step 4: Final Delivery -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <strong style="font-size: var(--text-sm); color: var(--text-muted);">4. Arriving at Destination</strong>
+          <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);">Thu, 17 Oct</span>
+        </div>
+        <span style="font-size: var(--text-xs); color: var(--text-muted);">74 Highbury Hill, Flat 3B, London N5 1AU, United Kingdom</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Itemized Order Summary -->
+  <section class="section-card">
+    <h2 class="t-display" style="font-size: var(--text-base); font-weight: var(--weight-bold); margin: 0;">
+      ORDER SUMMARY (2 JERSEYS)
+    </h2>
+
+    <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+      <!-- Item 1 -->
+      <div class="item-row">
+        <div>
+          <strong style="font-size: var(--text-sm);">Arsenal FC 2024/25 Home Kit</strong>
+          <div style="font-size: var(--text-xs); color: var(--text-muted);">Size L · Bukayo Saka #07 (+15 USD) · PL Badge (+5 USD)</div>
+        </div>
+        <span style="font-family: var(--font-mono); font-size: var(--text-sm); font-weight: var(--weight-bold);">105.00 USD</span>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="item-row">
+        <div>
+          <strong style="font-size: var(--text-sm);">Real Madrid 24/25 Champions Edition</strong>
+          <div style="font-size: var(--text-xs); color: var(--text-muted);">Size M · Blank · Standard Authentic</div>
+        </div>
+        <span style="font-family: var(--font-mono); font-size: var(--text-sm); font-weight: var(--weight-bold);">90.00 USD</span>
+      </div>
+
+      <!-- Financial Totals -->
+      <div style="display: flex; flex-direction: column; gap: var(--space-1); pt-2; border-top: 1px solid var(--border-subtle); margin-top: var(--space-1);">
+        <div class="summary-line">
+          <span style="color: var(--text-secondary);">Base Items Subtotal</span>
+          <span style="font-family: var(--font-mono);">175.00 USD</span>
+        </div>
+        <div class="summary-line">
+          <span style="color: var(--text-secondary);">Squad Personalizations</span>
+          <span style="font-family: var(--font-mono); color: var(--accent-primary);">+20.00 USD</span>
+        </div>
+        <div class="summary-line">
+          <span style="color: var(--text-secondary);">Tracked Courier Delivery</span>
+          <span style="font-family: var(--font-mono); color: var(--state-success); font-weight: var(--weight-bold);">FREE</span>
+        </div>
+        <div class="summary-line">
+          <span style="color: var(--text-secondary);">Turnstile Cryptographic Cert</span>
+          <span style="font-family: var(--font-mono); color: var(--state-info); font-weight: var(--weight-bold);">INCLUDED</span>
+        </div>
+        <div class="summary-line" style="margin-top: var(--space-2); padding-top: var(--space-2); border-top: 1px solid var(--border-subtle); font-size: var(--text-base); font-weight: var(--weight-bold);">
+          <span>Total Paid (Stripe)</span>
+          <span style="font-family: var(--font-mono); color: var(--accent-primary);">195.00 USD</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KitBot Post-Purchase Assistant Pill -->
+  <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-3); display: flex; align-items: center; justify-content: space-between; gap: var(--space-2);">
+    <div style="display: flex; align-items: center; gap: var(--space-2); min-width: 0;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--accent-primary)" style="flex-shrink: 0;">
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+      </svg>
+      <span style="font-size: var(--text-xs); color: var(--text-secondary); truncate;">
+        &ldquo;Ask KitBot: Can I update my delivery notes before dispatch?&rdquo;
+      </span>
+    </div>
+    <button class="btn btn--secondary btn--icon" aria-label="Ask KitBot with Voice" style="min-width: var(--touch-min); min-height: var(--touch-min); flex-shrink: 0;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+    </button>
+  </div>
+
+  <!-- Primary Post-Purchase Actions -->
+  <div class="action-stack">
+    <button class="btn btn--primary" style="display: flex; align-items: center; justify-content: center; gap: var(--space-2);">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+      Download Turnstile Certificate (PDF)
+    </button>
+    <a href="catalog.html" class="btn btn--secondary" style="display: flex; align-items: center; justify-content: center; text-decoration: none;">
+      Continue Exploring KitRoom Vault
+    </a>
+  </div>
+
+</div>
+</body>
+</html>

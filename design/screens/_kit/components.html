@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit · Components & States — ShopMate AI</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../kit.css">
+<script>/* canvas passes ?theme=dark */(function(){var t=new URLSearchParams(location.search).get("theme");if(t)document.documentElement.dataset.theme=t;})();</script>
+<style>
+  .screen {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-6) var(--space-16);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .section-head {
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: var(--space-2);
+  }
+  .grid-cols-auto {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+  }
+  .grid-cols-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+  .row-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .demo-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .demo-label {
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+  <main class="screen">
+    <!-- Header -->
+    <header class="section">
+      <span class="t-eyebrow">Design Canvas · Step 2</span>
+      <h1 class="t-display">Kit · Components & States</h1>
+      <p class="t-meta">Complete component inventory rendered purely from active tokens in light & dark modes.</p>
+    </header>
+
+    <!-- 1. The Signature Element -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="t-title">1. Signature Element: The Matchday Authentication Ticket Stub</h2>
+        <span class="t-meta">Recurring tactile coupon for kit customizer, cart review, and receipt certificate</span>
+      </div>
+      <div class="grid-cols-auto">
+        <div class="auth-ticket">
+          <div class="auth-ticket-header">
+            <span class="t-eyebrow">Official Kitroom Certificate</span>
+            <span class="auth-ticket-stamp">Verified 2024/25</span>
+          </div>
+          <div class="auth-ticket-body">
+            <div>
+              <span class="auth-ticket-meta">Player Edition Personalization</span>
+              <div class="auth-ticket-squad">SAKA #07</div>
+            </div>
+            <div class="num t-title" style="color:var(--accent-primary)">+15.00 USD</div>
+          </div>
+          <div class="auth-ticket-meta">Turnstile Ref: ARS-24-HM-07 · Heat-Sealed Polyflex Print</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Buttons (All States) -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="t-title">2. Buttons (Interactive States)</h2>
+        <span class="t-meta">Primary, Secondary, Ghost, Icon, and Loading variations</span>
+      </div>
+      <div class="grid-cols-auto">
+        <div class="demo-box">
+          <span class="demo-label">Primary Button States</span>
+          <div class="row-wrap">
+            <button type="button" class="btn btn--primary">
+              <i data-lucide="shopping-bag" aria-hidden="true"></i>
+              <span>Add to Bag</span>
+            </button>
+            <button type="button" class="btn btn--primary btn--loading" aria-label="Loading action">
+              <span>Processing</span>
+            </button>
+            <button type="button" class="btn btn--primary" disabled>
+              <span>Sold Out</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="demo-box">
+          <span class="demo-label">Secondary & Ghost</span>
+          <div class="row-wrap">
+            <button type="button" class="btn btn--secondary">
+              <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+              <span>Filters</span>
+            </button>
+            <button type="button" class="btn btn--ghost">
+              <span>View Heritage Details</span>
+            </button>
+            <button type="button" class="btn btn--secondary" disabled>
+              <span>Unavailable</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="demo-box">
+          <span class="demo-label">Icon Buttons & Touch Targets</span>
+          <div class="row-wrap">
+            <button type="button" class="btn btn--secondary btn--icon" aria-label="Search catalog">
+              <i data-lucide="search" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon" aria-label="Toggle shopping bag">
+              <i data-lucide="shopping-bag" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--primary btn--icon" aria-label="Open voice AI assistant">
+              <i data-lucide="mic" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon" aria-label="Save to favorites">
+              <i data-lucide="heart" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Chips & Badges -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="t-title">3. Chips, Filters & Badges</h2>
+        <span class="t-meta">Selection chips and semantic state tags</span>
+      </div>
+      <div class="row-wrap">
+        <button type="button" class="chip chip--on" aria-pressed="true">Premier League</button>
+        <button type="button" class="chip" aria-pressed="false">La Liga</button>
+        <button type="button" class="chip" aria-pressed="false">Serie A</button>
+        <button type="button" class="chip" aria-pressed="false">Retro Classics</button>
+
+        <span class="badge badge--success">
+          <i data-lucide="check" aria-hidden="true"></i> In Stock (8 left)
+        </span>
+        <span class="badge badge--warning">
+          <i data-lucide="alert-triangle" aria-hidden="true"></i> Low Stock
+        </span>
+        <span class="badge badge--error">
+          <i data-lucide="alert-circle" aria-hidden="true"></i> Sold Out
+        </span>
+        <span class="badge badge--info">
+          <i data-lucide="sparkles" aria-hidden="true"></i> AI Recommended
+        </span>
+      </div>
+    </section>
+
+    <!-- 4. Domain Components -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="t-title">4. Domain Kitroom Components</h2>
+        <span class="t-meta">Jersey item card, European size selector, quantity stepper, and voice prompt pill</span>
+      </div>
+      <div class="grid-cols-auto">
+        <!-- Kit Product Card -->
+        <article class="kit-card">
+          <div class="ph kit-card-img">Photo — Arsenal 2024/25 Authentic Home Kit · 3:4</div>
+          <div>
+            <span class="t-eyebrow">Arsenal FC · Authentic Home</span>
+            <h3 class="t-title" style="font-size:var(--text-lg)">2024/25 Matchday Edition</h3>
+            <div class="row" style="justify-content:space-between; padding:var(--space-1) 0">
+              <span class="num t-title" style="color:var(--text-primary)">85.00 USD</span>
+              <span class="badge badge--success">In Stock</span>
+            </div>
+          </div>
+          <div class="row-wrap" style="gap:var(--space-1)">
+            <button type="button" class="size-pill">S</button>
+            <button type="button" class="size-pill">M</button>
+            <button type="button" class="size-pill size-pill--selected" aria-selected="true">L</button>
+            <button type="button" class="size-pill">XL</button>
+            <button type="button" class="size-pill size-pill--disabled" disabled>XXL</button>
+          </div>
+          <button type="button" class="btn btn--primary btn--block">
+            <i data-lucide="shopping-bag" aria-hidden="true"></i>
+            <span>Add to Bag</span>
+          </button>
+        </article>
+
+        <!-- Stepper & Voice Pill Box -->
+        <div class="demo-box" style="justify-content:space-between">
+          <div>
+            <span class="demo-label">Kit Customizer Stepper</span>
+            <div class="row-wrap" style="margin-top:var(--space-2)">
+              <div class="stepper">
+                <button type="button" class="stepper-btn" aria-label="Decrease quantity">−</button>
+                <span class="stepper-val num">1</span>
+                <button type="button" class="stepper-btn" aria-label="Increase quantity">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="demo-label">Voice Conversational AI Prompt Pill</span>
+            <div style="margin-top:var(--space-2)">
+              <button type="button" class="voice-pill">
+                <span class="voice-pill-mic"><i data-lucide="mic" aria-hidden="true"></i></span>
+                <span>"Find retro Beckham jersey size L"</span>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <span class="demo-label">Toast Notification</span>
+            <div class="toast" role="status" style="margin-top:var(--space-2)">
+              <i data-lucide="check-circle" aria-hidden="true"></i>
+              <span>Arsenal Home Kit (L) added to your bag</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Forms & Inputs -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="t-title">5. Form Fields & Search Inputs</h2>
+        <span class="t-meta">Validated inputs, labels, hints, and error states</span>
+      </div>
+      <div class="grid-cols-auto">
+        <div class="field">
+          <label class="label" for="search-input">Search Football Kits</label>
+          <input type="search" id="search-input" class="input" placeholder="Club name, player, era...">
+          <span class="hint">Semantic search powered by pgvector embeddings</span>
+        </div>
+
+        <div class="field">
+          <label class="label" for="print-name">Player Squad Name</label>
+          <input type="text" id="print-name" class="input" value="SAKA">
+          <span class="hint">Maximum 12 uppercase letters for back printing</span>
+        </div>
+
+        <div class="field">
+          <label class="label" for="promo-code">Voucher Code</label>
+          <input type="text" id="promo-code" class="input" value="MATCHDAY50" aria-invalid="true">
+          <span class="error-text">
+            <i data-lucide="alert-circle" aria-hidden="true"></i> Promo code has expired.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Feedback & Skeletons -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="t-title">6. Loading & Feedback States</h2>
+        <span class="t-meta">Shimmer loading skeletons and empty states</span>
+      </div>
+      <div class="grid-cols-auto">
+        <div class="card" style="display:flex; flex-direction:column; gap:var(--space-3)">
+          <div class="skeleton" style="width:100%; height:180px"></div>
+          <div class="skeleton" style="width:60%; height:20px"></div>
+          <div class="skeleton" style="width:40%; height:16px"></div>
+        </div>
+
+        <div class="empty-state card">
+          <i data-lucide="shopping-bag" style="width:36px; height:36px; stroke-width:1.5" aria-hidden="true"></i>
+          <h3 class="t-title">Your Bag is Empty</h3>
+          <p class="t-meta">Explore authentic matchday kits from the Premier League or ask our AI KitBot.</p>
+          <button type="button" class="btn btn--primary" style="margin-top:var(--space-2)">
+            <span>Explore Catalog</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

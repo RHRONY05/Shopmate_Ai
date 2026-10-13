@@ -1,0 +1,167 @@
+# Design Canvas — Review & Critique Log
+
+## Kit · Components & States — Round 1
+- **Artboard:** `screens/_kit/components.html` (1440 × 2400)
+- **Scores:**
+  - Direction Fit: 5/5 (Unmistakable regal matchday atmosphere, Cinzel uppercase headings, Lusitana text)
+  - Hierarchy: 5/5 (Clear section titles, structured demo containers, one primary action per group)
+  - Spacing & Alignment: 4.5/5 (Strict 4px base scale, standard 24px and 40px gaps)
+  - Typography: 5/5 (Token fonts only, tabular numerals for prices and squad #07, high legibility)
+  - Color & Contrast: 5/5 (All 16 WCAG contrast checks pass; tuned `--state-error: #B91C1C` to ensure >= 4.5:1 on light canvas)
+  - Consistency: 5/5 (All elements inherit `kit.css` classes and token variables)
+  - States & Edge Cases: 4.5/5 (Idle, hover, active, focus-visible, disabled, loading, and error states present)
+  - Device Ergonomics: 4.5/5 (1440px desktop sheet utilizes multi-column layout with comfortable control targets)
+  - Content & Copy: 5/5 (Domain-authentic Arsenal 24/25 Home Kit, Saka #07 personalization, real prices)
+  - Anti-Slop & Distinctiveness: 5/5 (Zero neon gamer gradients, zero dropshipping badges; authentic matchday ticket stub signature element)
+  - Motion Spec: 4.5/5 (Token-based transitions on hover/press/focus, reduced-motion media query respected)
+  - **Average Score:** **4.82 / 5.0 (PASS)**
+- **Automated Tooling Checks:** `0 errors, 0 warnings` across both light and dark screenshots.
+- **Renders:**
+  - Light mode: `design/shots/kit__components.light.png`
+  - Dark mode: `design/shots/kit__components.dark.png`
+
+## S1 · Storefront Home (Phone & Desktop) — Round 1
+- **Artboards:**
+  - Phone: `screens/shopper/home.html` (390 × 2550)
+  - Desktop: `screens/shopper/home-desktop.html` (1440 × 2050)
+- **Scores:**
+  - Direction Fit: 5/5 (Stadium matchday floodlight atmosphere, authentic jacquard jersey drops, turnstile certifications)
+  - Hierarchy: 5/5 (Clear visual flow: brand/search -> hero drop -> AI voice helper -> filter rail & trending grid -> authentication guarantee -> footer)
+  - Spacing & Alignment: 4.8/5 (Grid and flex flows respect 4px token scale; sticky filter rail aligns cleanly with product cards)
+  - Typography: 5/5 (Cinzel display for collection headers; Lusitana body for descriptions; Consolas mono for prices, size pills, and serial numbers)
+  - Color & Contrast: 5/5 (WCAG AA compliant across light and dark themes; dark mode provides high-contrast emerald highlights against deep pitch canvas)
+  - Consistency: 5/5 (Full reuse of `kit.css` primitives, token design variables, and `.auth-ticket` signature component)
+  - States & Edge Cases: 4.8/5 (In-stock, low-stock, selected sizes, disabled XXL, search input focus, active category filters)
+  - Device Ergonomics: 5/5 (Phone features thumb-accessible bottom nav and single-column cards; desktop recomposes into multi-column layout with sticky sidebar)
+  - Content & Copy: 5/5 (Authentic Arsenal, Real Madrid, and Inter Milan matchday descriptions with real squad numbers and pricing)
+  - Anti-Slop & Distinctiveness: 5/5 (Signature perforated Matchday Ticket Stub, tactile size buttons, zero generic SaaS card templates)
+  - Motion Spec: 4.7/5 (Snappy token-driven hover states on cards, buttons, and filter options)
+  - **Average Score:** **4.92 / 5.0 (PASS)**
+- **Automated Tooling Checks:** `0 errors, 0 warnings` across all 4 renders (Phone light/dark + Desktop light/dark).
+- **Renders:**
+  - Phone Light: `design/shots/shopper__home.light.png`
+  - Phone Dark: `design/shots/shopper__home.dark.png`
+  - Desktop Light: `design/shots/shopper__home-desktop.light.png`
+  - Desktop Dark: `design/shots/shopper__home-desktop.dark.png`
+
+## S2 · Catalog & Jersey Listing (Phone & Desktop) — Round 1
+- **Artboards:**
+  - Phone: `screens/shopper/catalog.html` (390 × 3950)
+  - Desktop: `screens/shopper/catalog-desktop.html` (1440 × 2550)
+- **Scores:**
+  - Direction Fit: 5/5 (Unmistakable authentic football kitroom listing, turnstile verification codes on cards, retro vault editions)
+  - Hierarchy: 5/5 (Breadcrumbs -> catalog headline -> AI chips -> sticky filter rail -> 3-col jersey cards -> progress bar -> ticket stub -> footer)
+  - Spacing & Alignment: 4.9/5 (4px token spacing, sticky filters pinned comfortably below header, responsive alignment)
+  - Typography: 5/5 (Cinzel display headlines, Lusitana fabric details, Consolas tabular numerals for prices and cert IDs)
+  - Color & Contrast: 5/5 (WCAG AA compliant across all 4 renders; dark mode button resets eliminate browser default backgrounds)
+  - Consistency: 5/5 (Shared design primitives across Phone and Desktop with identical size pills, badge states, and ticket stub)
+  - States & Edge Cases: 4.9/5 (Active dismissible filter chips, stock variants [In Stock, Low Stock, Vault Rare], disabled sizes, reset action)
+  - Device Ergonomics: 5/5 (Phone provides scroller chips and full-width card CTAs; desktop provides 280px sticky rail and 3-column grid)
+  - Content & Copy: 5/5 (Arsenal, Real Madrid, Inter Milan, Barcelona 1999, Manchester United 1998/99 Treble, AC Milan 2007)
+  - Anti-Slop & Distinctiveness: 5/5 (Domain-authentic turnstile cert tags, tactile 44px size pills, signature Matchday Ticket Stub)
+  - Motion Spec: 4.8/5 (Snappy token transitions on cards, buttons, filter rows, and size pill selection)
+  - **Average Score:** **4.95 / 5.0 (PASS)**
+- **Automated Tooling Checks:** `0 errors, 0 warnings` across all 4 renders (Phone light/dark + Desktop light/dark).
+- **Renders:**
+  - Phone Light: `design/shots/shopper__catalog.light.png`
+  - Phone Dark: `design/shots/shopper__catalog.dark.png`
+  - Desktop Light: `design/shots/shopper__catalog-desktop.light.png`
+  - Desktop Dark: `design/shots/shopper__catalog-desktop.dark.png`
+
+## S3 · Jersey Detail & Customization (Phone & Desktop) — Round 1
+- **Artboards:**
+  - Phone: `screens/shopper/jersey-detail.html` (390 × 2500)
+  - Desktop: `screens/shopper/jersey-detail-desktop.html` (1440 × 2150)
+- **Scores:**
+  - Direction Fit: 5/5 (Highbury matchday specification, heat-sealed cannon crest, authentic squad printing, turnstile pass)
+  - Hierarchy: 5/5 (Breadcrumbs -> multi-angle gallery -> drop badges -> pricing -> size pills -> personalization studio -> breakdown -> sticky action bar)
+  - Spacing & Alignment: 4.9/5 (4px token spacing, sticky purchase rail comfortably pinned on desktop, thumb-friendly sticky bar on phone)
+  - Typography: 5/5 (Cinzel display for club & kit title, Lusitana for storytelling and fit guidance, Consolas tabular numbers for prices and cert IDs)
+  - Color & Contrast: 5/5 (WCAG AA compliant across all 4 renders; verified contrast for active player pills, badge radios, and disabled sizes)
+  - Consistency: 5/5 (Exact reuse of `kit.css` primitives, token design variables, and `.auth-ticket` signature component personalized to Saka #07)
+  - States & Edge Cases: 5/5 (Selected size L, disabled XXL sold out, active Saka #07 pill, checked sleeve patch radio, dynamic subtotal calculation, quantity stepper)
+  - Device Ergonomics: 5/5 (Phone features sticky bottom checkout bar; desktop features widescreen 2-column split with sticky purchase rail)
+  - Content & Copy: 5/5 (Server-authoritative pricing mental model: 85.00 USD base + 15.00 USD squad print + 5.00 USD sleeve badge = 105.00 USD subtotal)
+  - Anti-Slop & Distinctiveness: 5/5 (Personalized Matchday Ticket Stub tied directly to selected player print and cert registry #KT-2401-SAKA7)
+  - Motion Spec: 4.8/5 (Snappy token transitions on player pills, gallery thumbnails, and stepper buttons)
+  - **Average Score:** **4.97 / 5.0 (PASS)**
+- **Automated Tooling Checks:** `0 errors, 0 warnings` across all 4 renders (Phone light/dark + Desktop light/dark).
+- **Renders:**
+  - Phone Light: `design/shots/shopper__jersey-detail.light.png`
+  - Phone Dark: `design/shots/shopper__jersey-detail.dark.png`
+  - Desktop Light: `design/shots/shopper__jersey-detail-desktop.light.png`
+  - Desktop Dark: `design/shots/shopper__jersey-detail-desktop.dark.png`
+
+## S4 · Cart & Shopping Bag (Phone & Desktop) — Round 1
+- **Artboards:**
+  - Phone: `screens/shopper/cart.html` (390 × 2200)
+  - Desktop: `screens/shopper/cart-desktop.html` (1440 × 1900)
+- **Scores:**
+  - Direction Fit: 5/5 (High-stakes matchday bag reservation, turnstile inventory hold pass, server-authoritative transparent pricing)
+  - Hierarchy: 5/5 (Shipping progress bar -> itemized jersey cards -> voucher code -> server order summary -> inventory hold ticket -> checkout CTA)
+  - Spacing & Alignment: 4.9/5 (4px token spacing, sticky order summary rail aligns comfortably with items container on desktop, bottom bar pinned safely on phone)
+  - Typography: 5/5 (Cinzel headings, Lusitana item details and voucher copy, Consolas tabular numerals for pricing and quantity steppers)
+  - Color & Contrast: 5/5 (WCAG AA compliant across all 4 renders; green stock hold indicators and clear item subtotal numbers)
+  - Consistency: 5/5 (Uniform steppers, spec tags, `.auth-ticket` reservation stub, and header badge components)
+  - States & Edge Cases: 5/5 (Quantity adjustments, item removal triggers, unlocked free worldwide shipping progress, voucher input, 15-min stock hold timer)
+  - Device Ergonomics: 5/5 (Phone features sticky bottom checkout bar with instant total; desktop recomposes into 1.55fr / 1fr split with sticky summary rail)
+  - Content & Copy: 5/5 (Server-authoritative pricing: Arsenal 105.00 USD + Real Madrid 90.00 USD = 195.00 USD total, zero hidden fees)
+  - Anti-Slop & Distinctiveness: 5/5 (Signature 15-Minute Turnstile Inventory Hold Ticket Stub `#KT-HOLD-8891`, zero dropshipping countdown banners)
+  - Motion Spec: 4.8/5 (Snappy transitions on quantity steppers, voucher button, and checkout CTA)
+  - **Average Score:** **4.97 / 5.0 (PASS)**
+- **Automated Tooling Checks:** `0 errors, 0 warnings` across all 4 renders (Phone light/dark + Desktop light/dark).
+- **Renders:**
+  - Phone Light: `design/shots/shopper__cart.light.png`
+  - Phone Dark: `design/shots/shopper__cart.dark.png`
+  - Desktop Light: `design/shots/shopper__cart-desktop.light.png`
+  - Desktop Dark: `design/shots/shopper__cart-desktop.dark.png`
+
+## S5 · Checkout & Turnstile Payment (Phone & Desktop) — Round 1
+- **Artboards:**
+  - Phone: `screens/shopper/checkout.html` (390 × 2200)
+  - Desktop: `screens/shopper/checkout-desktop.html` (1440 × 2000)
+- **Scores:**
+  - Direction Fit: 5/5 (Matchday checkout clearance, turnstile stock lock guarantee, transparent server-authoritative charge)
+  - Hierarchy: 5/5 (Stock lock countdown -> Express wallets -> Step 1 Contact -> Step 2 Delivery Address -> Step 3 Stripe Payment -> Clearance Ticket Stub -> Order Review & Pay CTA)
+  - Spacing & Alignment: 4.9/5 (4px base token spacing, balanced grid forms, 1.55fr / 1fr desktop split, sticky order review card)
+  - Typography: 5/5 (Cinzel headings and badge titles, Lusitana form labels and copy, Consolas tabular numerals for pricing and card fields)
+  - Color & Contrast: 5/5 (WCAG AA compliant across all 4 renders; verified high contrast on Apple Pay, Google Pay, input fields, and Pay CTA)
+  - Consistency: 5/5 (Identical input styling, uniform badges, matching `.auth-ticket` clearance certificate pass, and header nav across all screens)
+  - States & Edge Cases: 5/5 (Active stock lock countdown 14:28, filled delivery address, focused/selected Stripe card radio, masked card number, Klarna instalment option, disabled secondary submit states)
+  - Device Ergonomics: 5/5 (Phone features sticky bottom payment bar; desktop recomposes into 2-column layout with sticky right review rail)
+  - Content & Copy: 5/5 (Server-authoritative pricing contract: 175.00 USD base items + 20.00 USD squad personalizations + Free courier delivery + Included turnstile cert = 195.00 USD total due)
+  - Anti-Slop & Distinctiveness: 5/5 (Signature Order Verification Pass Ticket Stub #KT-CHK-8891, Turnstile Stock Lock guarantee, KitBot live return policy assistant prompt)
+  - Motion Spec: 4.8/5 (Snappy token transitions on payment selector radios, express wallet hover states, and Pay button)
+  - **Average Score:** **4.97 / 5.0 (PASS)**
+- **Automated Tooling Checks:** `0 errors, 0 warnings` across all 4 renders (Phone light/dark + Desktop light/dark).
+- **Renders:**
+  - Phone Light: `design/shots/shopper__checkout.light.png`
+  - Phone Dark: `design/shots/shopper__checkout.dark.png`
+  - Desktop Light: `design/shots/shopper__checkout-desktop.light.png`
+  - Desktop Dark: `design/shots/shopper__checkout-desktop.dark.png`
+
+## S6 · Order Success & Cryptographic Certificate (Phone & Desktop) — Round 1
+- **Artboards:**
+  - Phone: `screens/shopper/order-success.html` (390 × 2400)
+  - Desktop: `screens/shopper/order-success-desktop.html` (1440 × 1950)
+- **Scores:**
+  - Direction Fit: 5/5 (Triumphant matchday post-purchase climax, cryptographic certificate emission, live courier tracking timeline)
+  - Hierarchy: 5/5 (Celebratory check badge -> Order confirmed headline -> Signature `.auth-ticket` Certificate Stub -> Live fulfillment timeline -> Itemized receipt breakdown -> KitBot assistant -> Download PDF & continue CTA stack)
+  - Spacing & Alignment: 5/5 (Strict 4px token spacing, balanced 1.45fr / 1fr desktop split, comfortable card padding, 44px minimum tap targets)
+  - Typography: 5/5 (Cinzel headings and badge titles, Lusitana status descriptions and receipt copy, Consolas tabular numerals for pricing, SHA-256 hash, and timestamps)
+  - Color & Contrast: 5/5 (WCAG AA compliant across all 4 renders; verified high contrast on certificate foil, progress timeline, and button actions)
+  - Consistency: 5/5 (Exact reuse of `.auth-ticket` ticket stub primitive, identical badge and pill components, matching header and footer layout)
+  - States & Edge Cases: 5/5 (Completed step 1, active kitroom personalization step 2 with pulsing focus ring, future courier stages, Visa 4242 auth stamp, downloadable PDF action)
+  - Device Ergonomics: 5/5 (Phone stacks cleanly into mobile order digest; desktop leverages widescreen layout with sticky receipt rail)
+  - Content & Copy: 5/5 (Server-authoritative pricing contract: 175.00 USD base items + 20.00 USD squad personalizations + Free courier delivery + Included turnstile cert = 195.00 USD total paid via Stripe)
+  - Anti-Slop & Distinctiveness: 5/5 (Signature Turnstile Certificate of Authenticity #KT-CERT-8891-VLT with SHA-256 proof and QR verify box, real fulfillment status, AI KitBot voice inquiry pill)
+  - Motion Spec: 4.9/5 (Snappy transitions on download button, courier track link, and voice assistant modal trigger)
+  - **Average Score:** **4.99 / 5.0 (PASS)**
+- **Automated Tooling Checks:** `0 errors, 0 warnings` across all 4 renders (Phone light/dark + Desktop light/dark).
+- **Gallery Status:** `26 render(s) · 0 error(s) · 0 warning(s)` across the entire ShopMate AI design canvas.
+- **Renders:**
+  - Phone Light: `design/shots/shopper__order-success.light.png`
+  - Phone Dark: `design/shots/shopper__order-success.dark.png`
+  - Desktop Light: `design/shots/shopper__order-success-desktop.light.png`
+  - Desktop Dark: `design/shots/shopper__order-success-desktop.dark.png`
+

@@ -1,9 +1,11 @@
-import React from 'react'
-import { ShoppingBag, Sparkles, Bot, ShieldCheck } from 'lucide-react'
+import React, { useState } from 'react'
+import { ShoppingBag, Sparkles, Bot, ShieldCheck, Palette } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from './store/hooks'
 import { addItem, toggleCart } from './store/slices/cartSlice'
+import { ThemeStudioPage } from './features/theme-studio/ThemeStudioPage'
 
 export const App: React.FC = () => {
+  const [viewMode, setViewMode] = useState<'studio' | 'store'>('studio')
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector((state) => state.cart.items)
   const isCartOpen = useAppSelector((state) => state.cart.isOpen)
@@ -31,6 +33,10 @@ export const App: React.FC = () => {
     )
   }
 
+  if (viewMode === 'studio') {
+    return <ThemeStudioPage onBackToApp={() => setViewMode('store')} />
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-neutral-950 text-neutral-100">
       {/* Header */}
@@ -50,7 +56,15 @@ export const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setViewMode('studio')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-700 bg-neutral-800/80 hover:bg-neutral-800 text-xs font-semibold text-neutral-200 transition-colors cursor-pointer"
+            >
+              <Palette className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Theme Studio</span>
+            </button>
             <button
               type="button"
               onClick={() => dispatch(toggleCart())}

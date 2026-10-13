@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S5 · Checkout & Payment (Desktop) — ShopMate AI</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../kit.css">
+<script>/* the canvas passes ?theme=dark */(function(){var t=new URLSearchParams(location.search).get("theme");if(t)document.documentElement.dataset.theme=t;})();</script>
+<style>
+  body {
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+  }
+
+  /* Desktop Top Header */
+  .desktop-header {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+  }
+  .header-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: var(--space-3) var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+  .brand-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    color: inherit;
+  }
+  .brand-crest {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-primary);
+    color: var(--btn-text);
+    display: grid;
+    place-items: center;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    transition: color var(--dur-fast);
+  }
+  .nav-links a:hover, .nav-links a[aria-current="page"] {
+    color: var(--accent-primary);
+  }
+
+  /* Checkout Layout */
+  .layout-container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-6) var(--space-12);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .checkout-split {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  .timer-banner {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .section-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    box-shadow: var(--shadow-1);
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+  .form-label {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+  .input-field {
+    min-height: var(--touch-min);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    font-family: inherit;
+    outline: none;
+    transition: border-color var(--dur-fast);
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .input-field:focus {
+    border-color: var(--border-focus);
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  .payment-option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    min-height: var(--touch-min);
+    cursor: pointer;
+  }
+  .payment-option-row--active {
+    border-color: var(--border-focus);
+    background: var(--bg-card-hover);
+  }
+
+  /* Right Column: Sticky Summary Rail */
+  .summary-rail {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    box-shadow: var(--shadow-2);
+    position: sticky;
+    top: calc(var(--touch-min) + var(--space-8));
+  }
+  .item-mini {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .item-mini-thumb {
+    width: 52px;
+    height: 68px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+  .summary-total {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--space-4);
+    margin-top: var(--space-2);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-bold);
+    color: var(--text-primary);
+  }
+
+  .link-action {
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    color: var(--btn-hover);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+    padding: 0 var(--space-1);
+  }
+  [data-theme="dark"] .link-action {
+    color: var(--accent-primary);
+  }
+
+  /* Desktop Footer */
+  .desktop-footer {
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    padding: var(--space-12) var(--space-6) var(--space-8);
+    margin-top: var(--space-12);
+  }
+  .footer-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--space-8);
+  }
+</style>
+</head>
+<body>
+  <!-- Desktop Header -->
+  <header class="desktop-header">
+    <div class="header-inner">
+      <div style="display:flex; align-items:center; gap:var(--space-8)">
+        <a href="home-desktop.html" class="brand-group">
+          <div class="brand-crest">
+            <i data-lucide="shield" aria-hidden="true"></i>
+          </div>
+          <div>
+            <span class="t-eyebrow" style="font-size:var(--text-xs); display:block; line-height:1">KitRoom Authenticated</span>
+            <span class="t-title" style="font-size:var(--text-lg); line-height:1.2">ShopMate AI</span>
+          </div>
+        </a>
+
+        <nav aria-label="Primary Navigation">
+          <ul class="nav-links">
+            <li><a href="home-desktop.html">Featured</a></li>
+            <li><a href="catalog-desktop.html">All Matchday Kits</a></li>
+            <li><a href="catalog-desktop.html">Premier League</a></li>
+            <li><a href="catalog-desktop.html">La Liga</a></li>
+            <li><a href="catalog-desktop.html">Retro Vault</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:var(--space-4)">
+        <span class="badge badge--success" style="font-size:var(--text-sm); gap:var(--space-2)">
+          <i data-lucide="shield-check" aria-hidden="true"></i>
+          <span>256-Bit SSL Encrypted Checkout</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout-container">
+    <!-- Breadcrumbs -->
+    <nav aria-label="Breadcrumb" style="display:flex; align-items:center; gap:var(--space-2)">
+      <a href="home-desktop.html" class="link-action t-meta" style="padding:0">Storefront</a>
+      <span class="t-meta">/</span>
+      <a href="catalog-desktop.html" class="link-action t-meta" style="padding:0">Catalog</a>
+      <span class="t-meta">/</span>
+      <a href="cart-desktop.html" class="link-action t-meta" style="padding:0">Shopping Bag</a>
+      <span class="t-meta">/</span>
+      <span class="t-meta" style="color:var(--text-primary); font-weight:var(--weight-medium)">Turnstile Matchday Checkout</span>
+    </nav>
+
+    <!-- Headline Bar -->
+    <section class="row" style="justify-content:space-between; align-items:baseline">
+      <div>
+        <h1 class="t-display" style="font-size:var(--text-3xl); margin:0">Matchday Checkout</h1>
+        <p class="t-meta" style="font-size:var(--text-sm); margin-top:var(--space-1)">Complete your delivery & payment to authorize turnstile certificate emission</p>
+      </div>
+      <span class="badge badge--info" style="font-size:var(--text-sm)">
+        <i data-lucide="lock" aria-hidden="true"></i> Turnstile Stock Lock Active
+      </span>
+    </section>
+
+    <!-- Main Checkout 2-Column Split -->
+    <section class="checkout-split">
+      <!-- Left Column: Checkout Forms -->
+      <div style="display:flex; flex-direction:column; gap:var(--space-5)">
+        <!-- Stock Hold Timer Banner -->
+        <div class="timer-banner">
+          <div style="display:flex; align-items:center; gap:var(--space-3)">
+            <i data-lucide="clock" style="color:var(--accent-primary); width:20px; height:20px" aria-hidden="true"></i>
+            <div>
+              <span class="t-title" style="font-size:var(--text-sm); display:block">Hold Active: 14:28 Remaining</span>
+              <span class="t-meta" style="font-size:var(--text-xs)">Your 2 jerseys are reserved under turnstile lock to prevent cart contention</span>
+            </div>
+          </div>
+          <span class="badge badge--success">15-Min Hold Guaranteed</span>
+        </div>
+
+        <!-- Express Checkout -->
+        <div class="section-card">
+          <span class="form-label">Express Matchday Checkout</span>
+          <div class="grid-2">
+            <button type="button" class="btn btn--primary" style="background:var(--text-primary); color:var(--bg-canvas); justify-content:center">
+              <i data-lucide="zap" aria-hidden="true"></i>
+              <span>Pay with Apple Pay</span>
+            </button>
+            <button type="button" class="btn btn--outline" style="justify-content:center">
+              <i data-lucide="credit-card" aria-hidden="true"></i>
+              <span>Google Pay</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Section 1: Contact Information -->
+        <div class="section-card">
+          <div class="row" style="justify-content:space-between">
+            <span class="form-label">1. Contact Information</span>
+            <span class="t-meta" style="font-size:var(--text-xs)">Step 1 of 3</span>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="contact-email" class="t-meta" style="font-size:var(--text-xs)">Email Address for Cert Emission</label>
+              <input id="contact-email" type="email" class="input-field" value="alex.fan@kitroom.com" required>
+            </div>
+            <div class="form-group">
+              <label for="contact-phone" class="t-meta" style="font-size:var(--text-xs)">Phone for Courier SMS Updates</label>
+              <input id="contact-phone" type="tel" class="input-field" value="+44 7911 123456" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Delivery & Shipping Address -->
+        <div class="section-card">
+          <div class="row" style="justify-content:space-between">
+            <span class="form-label">2. Delivery Address</span>
+            <span class="badge badge--success">Tracked Matchday Courier (Free)</span>
+          </div>
+          <div class="form-group">
+            <label for="ship-name" class="t-meta" style="font-size:var(--text-xs)">Full Recipient Name</label>
+            <input id="ship-name" type="text" class="input-field" value="Alex Morgan" required>
+          </div>
+          <div class="form-group">
+            <label for="ship-address" class="t-meta" style="font-size:var(--text-xs)">Street Address & Flat / Unit</label>
+            <input id="ship-address" type="text" class="input-field" value="74 Highbury Hill, Flat 3B" required>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="ship-city" class="t-meta" style="font-size:var(--text-xs)">City / Town</label>
+              <input id="ship-city" type="text" class="input-field" value="London" required>
+            </div>
+            <div class="form-group">
+              <label for="ship-postal" class="t-meta" style="font-size:var(--text-xs)">Postal Code</label>
+              <input id="ship-postal" type="text" class="input-field" value="N5 1AU" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Payment Method (Stripe 256-Bit SSL) -->
+        <div class="section-card">
+          <div class="row" style="justify-content:space-between">
+            <span class="form-label">3. Payment Details</span>
+            <span class="t-meta" style="font-size:var(--text-xs)">Stripe Secured 256-Bit SSL</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:var(--space-3)">
+            <label class="payment-option-row payment-option-row--active">
+              <span style="display:flex; align-items:center; gap:var(--space-2); font-size:var(--text-sm)">
+                <input type="radio" name="pay-method" checked>
+                <span style="font-weight:var(--weight-semibold)">Credit or Debit Card</span>
+              </span>
+              <div style="display:flex; align-items:center; gap:var(--space-2)">
+                <span class="badge badge--info" style="font-size:var(--text-xs)">Visa / MC / Amex</span>
+                <i data-lucide="shield-check" style="color:var(--accent-primary); width:18px; height:18px" aria-hidden="true"></i>
+              </div>
+            </label>
+
+            <!-- Card Input Fields -->
+            <div style="display:flex; flex-direction:column; gap:var(--space-3); padding:var(--space-2) 0">
+              <div class="form-group">
+                <label for="card-num" class="t-meta" style="font-size:var(--text-xs)">Card Number</label>
+                <input id="card-num" type="text" class="input-field" value="•••• •••• •••• 4242" style="font-family:var(--font-mono)">
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="card-exp" class="t-meta" style="font-size:var(--text-xs)">Expiration Date</label>
+                  <input id="card-exp" type="text" class="input-field" value="12/28" style="font-family:var(--font-mono)">
+                </div>
+                <div class="form-group">
+                  <label for="card-cvc" class="t-meta" style="font-size:var(--text-xs)">Security Code (CVC)</label>
+                  <input id="card-cvc" type="text" class="input-field" value="•••" style="font-family:var(--font-mono)">
+                </div>
+              </div>
+            </div>
+
+            <label class="payment-option-row">
+              <span style="display:flex; align-items:center; gap:var(--space-2); font-size:var(--text-sm)">
+                <input type="radio" name="pay-method">
+                <span>Klarna · 4 Interest-Free Payments of 48.75 USD</span>
+              </span>
+              <span class="t-meta" style="font-size:var(--text-xs)">Pay Later</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Signature Element: Clearance Ticket Stub -->
+        <div class="auth-ticket">
+          <div class="auth-ticket-header">
+            <div style="display:flex; align-items:center; gap:var(--space-3)">
+              <i data-lucide="shield-check" style="color:var(--accent-primary)" aria-hidden="true"></i>
+              <span class="t-eyebrow">KitRoom Vault Clearance Standard</span>
+            </div>
+            <span class="auth-ticket-stamp">READY FOR EMISSION</span>
+          </div>
+          <div class="auth-ticket-body">
+            <div>
+              <span class="auth-ticket-meta">Official Turnstile Clearance</span>
+              <div class="auth-ticket-squad" style="font-size:var(--text-2xl)">ORDER VERIFICATION PASS</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:var(--space-4)">
+              <span class="badge badge--success">Ready to Issue</span>
+              <i data-lucide="award" style="width:40px; height:40px; color:var(--accent-primary)" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="auth-ticket-meta">Turnstile Clearance Pass #KT-CHK-8891 · Cryptographic proof issued instantly upon successful payment.</div>
+        </div>
+      </div>
+
+      <!-- Right Column: Sticky Order Summary & Authorize CTA -->
+      <aside class="summary-rail">
+        <h2 class="t-title" style="font-size:var(--text-xl); margin:0">Order Review (2 Items)</h2>
+
+        <!-- Item 1 Mini -->
+        <div class="item-mini">
+          <div class="ph item-mini-thumb">Arsenal 24/25</div>
+          <div style="flex:1; display:flex; flex-direction:column; gap:var(--space-1)">
+            <span class="t-title" style="font-size:var(--text-sm)">Arsenal 24/25 Home</span>
+            <span class="t-meta" style="font-size:var(--text-xs)">Size L · Saka #07 · PL Badge</span>
+            <span class="t-meta" style="font-size:var(--text-xs); color:var(--text-muted)">#KT-2401-SAKA7</span>
+          </div>
+          <span class="num t-title" style="font-size:var(--text-sm)">105.00 USD</span>
+        </div>
+
+        <!-- Item 2 Mini -->
+        <div class="item-mini">
+          <div class="ph item-mini-thumb">Real Madrid UCL</div>
+          <div style="flex:1; display:flex; flex-direction:column; gap:var(--space-1)">
+            <span class="t-title" style="font-size:var(--text-sm)">Real Madrid Champions Edition</span>
+            <span class="t-meta" style="font-size:var(--text-xs)">Size M · Blank</span>
+            <span class="t-meta" style="font-size:var(--text-xs); color:var(--text-muted)">#KT-2402</span>
+          </div>
+          <span class="num t-title" style="font-size:var(--text-sm)">90.00 USD</span>
+        </div>
+
+        <!-- Price Breakdown -->
+        <div style="display:flex; flex-direction:column; gap:var(--space-3)">
+          <div class="summary-row">
+            <span>Base Items Subtotal</span>
+            <span class="num">175.00 USD</span>
+          </div>
+          <div class="summary-row">
+            <span>Squad Personalizations</span>
+            <span class="num">+20.00 USD</span>
+          </div>
+          <div class="summary-row">
+            <span>Tracked Courier Delivery</span>
+            <span class="badge badge--success">FREE</span>
+          </div>
+          <div class="summary-row">
+            <span>Turnstile Authenticity Security Cert</span>
+            <span class="badge badge--info">INCLUDED</span>
+          </div>
+          <div class="summary-row summary-total">
+            <span>Calculated Total Due</span>
+            <span class="num t-title" style="color:var(--text-primary); font-size:var(--text-2xl)">195.00 USD</span>
+          </div>
+        </div>
+
+        <a href="order-success-desktop.html" class="btn btn--primary" style="justify-content:center; gap:var(--space-2)">
+          <i data-lucide="shield-check" aria-hidden="true"></i>
+          <span>Pay 195.00 USD & Issue Cert</span>
+        </a>
+
+        <!-- Voice AI Assistant Bar -->
+        <button type="button" class="voice-pill" style="width:100%; justify-content:space-between">
+          <div style="display:flex; align-items:center; gap:var(--space-2)">
+            <span class="voice-pill-mic"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+            <span class="t-body" style="font-size:var(--text-xs)">"Ask KitBot: What is the return policy for printed kits?"</span>
+          </div>
+          <i data-lucide="mic" style="color:var(--accent-primary)" aria-hidden="true"></i>
+        </button>
+
+        <div style="border-top:1px solid var(--border-subtle); padding-top:var(--space-4); display:flex; flex-direction:column; gap:var(--space-2)">
+          <div class="row" style="gap:var(--space-2); color:var(--text-muted); font-size:var(--text-xs)">
+            <i data-lucide="lock" style="width:16px; height:16px; color:var(--accent-primary)" aria-hidden="true"></i>
+            <span>Stripe 256-bit encrypted checkout</span>
+          </div>
+          <div class="row" style="gap:var(--space-2); color:var(--text-muted); font-size:var(--text-xs)">
+            <i data-lucide="award" style="width:16px; height:16px; color:var(--accent-primary)" aria-hidden="true"></i>
+            <span>Official Turnstile cryptographic proof guaranteed</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- Desktop Footer -->
+  <footer class="desktop-footer">
+    <div class="footer-inner">
+      <div>
+        <div style="display:flex; align-items:center; gap:var(--space-2); margin-bottom:var(--space-3)">
+          <div class="brand-crest" style="width:28px; height:28px">
+            <i data-lucide="shield" style="width:16px; height:16px" aria-hidden="true"></i>
+          </div>
+          <span class="t-title" style="font-size:var(--text-base)">ShopMate AI · KitRoom</span>
+        </div>
+        <p class="t-meta" style="font-size:var(--text-sm); max-width:320px">
+          The autonomous football kitroom powered by AI search, voice ordering, and cryptographically verified matchday certification.
+        </p>
+      </div>
+
+      <div>
+        <div class="filter-group-title">Competitions</div>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:var(--space-2)">
+          <li><a href="#" class="t-meta link-action">Premier League</a></li>
+          <li><a href="#" class="t-meta link-action">La Liga</a></li>
+          <li><a href="#" class="t-meta link-action">Serie A</a></li>
+          <li><a href="#" class="t-meta link-action">Retro Vault</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="filter-group-title">Guarantees</div>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:var(--space-2)">
+          <li><a href="#" class="t-meta link-action">Turnstile Cert</a></li>
+          <li><a href="#" class="t-meta link-action">Squad Badges</a></li>
+          <li><a href="#" class="t-meta link-action">Authenticity Checks</a></li>
+          <li><a href="#" class="t-meta link-action">Returns Policy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="filter-group-title">System Status</div>
+        <div style="display:flex; flex-direction:column; gap:var(--space-2)">
+          <span class="badge badge--success" style="align-self:start"><i data-lucide="check-circle" aria-hidden="true"></i> AI Copilot Online</span>
+          <span class="t-meta" style="font-size:var(--text-xs)">Latency: 18ms · SSE Active</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

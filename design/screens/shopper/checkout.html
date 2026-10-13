@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S5 · Checkout & Payment (Phone) — ShopMate AI</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../kit.css">
+<script>/* the canvas passes ?theme=dark */(function(){var t=new URLSearchParams(location.search).get("theme");if(t)document.documentElement.dataset.theme=t;})();</script>
+<style>
+  .screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4) calc(var(--space-24) + env(safe-area-inset-bottom));
+  }
+  .timer-banner {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+  .section-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    box-shadow: var(--shadow-1);
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+  .form-label {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+  .input-field {
+    min-height: var(--touch-min);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    font-family: inherit;
+    outline: none;
+    transition: border-color var(--dur-fast);
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .input-field:focus {
+    border-color: var(--border-focus);
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-2);
+    min-width: 0;
+  }
+  .payment-option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    min-height: var(--touch-min);
+    cursor: pointer;
+  }
+  .payment-option-row--active {
+    border-color: var(--border-focus);
+    background: var(--bg-card-hover);
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+  .summary-total {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--space-3);
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    color: var(--text-primary);
+  }
+  .sticky-bottom-bar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: var(--z-sticky);
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-subtle);
+    padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    box-shadow: var(--shadow-3);
+  }
+</style>
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div style="display:flex; align-items:center; gap:var(--space-2); flex:1">
+      <a href="cart.html" class="btn btn--icon btn--ghost" aria-label="Back to bag">
+        <i data-lucide="arrow-left" aria-hidden="true"></i>
+      </a>
+      <div>
+        <span class="t-eyebrow" style="font-size:var(--text-xs); display:block; line-height:1">Turnstile Verification</span>
+        <h1 class="t-title" style="font-size:var(--text-base); line-height:1.1; margin:0">Matchday Checkout</h1>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:var(--space-2)">
+      <span class="badge badge--success" style="font-size:var(--text-xs)">
+        <i data-lucide="lock" aria-hidden="true"></i> 256-Bit SSL
+      </span>
+    </div>
+  </header>
+
+  <main class="screen">
+    <!-- Turnstile Stock Hold Timer -->
+    <section class="timer-banner">
+      <div style="display:flex; align-items:center; gap:var(--space-2)">
+        <i data-lucide="clock" style="color:var(--accent-primary); width:18px; height:18px" aria-hidden="true"></i>
+        <div>
+          <span class="t-title" style="font-size:var(--text-xs); display:block">Hold Active: 14:28 Remaining</span>
+          <span class="t-meta" style="font-size:var(--text-xs)">Your 2 jerseys are reserved under turnstile lock</span>
+        </div>
+      </div>
+      <span class="badge badge--info">Cart Locked</span>
+    </section>
+
+    <!-- Express Matchday Payment -->
+    <section class="section-card">
+      <span class="form-label">Express Matchday Checkout</span>
+      <div style="display:flex; flex-direction:column; gap:var(--space-2)">
+        <button type="button" class="btn btn--primary btn--block" style="background:var(--text-primary); color:var(--bg-canvas); justify-content:center">
+          <i data-lucide="zap" aria-hidden="true"></i>
+          <span>Pay with Apple Pay</span>
+        </button>
+        <button type="button" class="btn btn--outline btn--block" style="justify-content:center">
+          <i data-lucide="credit-card" aria-hidden="true"></i>
+          <span>Google Pay</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Section 1: Contact Information -->
+    <section class="section-card">
+      <div class="row" style="justify-content:space-between">
+        <span class="form-label">1. Contact Information</span>
+        <span class="t-meta" style="font-size:var(--text-xs)">Step 1 of 3</span>
+      </div>
+      <div class="form-group">
+        <label for="contact-email" class="t-meta" style="font-size:var(--text-xs)">Email Address for Cert Emission</label>
+        <input id="contact-email" type="email" class="input-field" value="alex.fan@kitroom.com" required>
+      </div>
+      <div class="form-group">
+        <label for="contact-phone" class="t-meta" style="font-size:var(--text-xs)">Phone for Courier SMS Tracking</label>
+        <input id="contact-phone" type="tel" class="input-field" value="+44 7911 123456" required>
+      </div>
+    </section>
+
+    <!-- Section 2: Shipping Destination -->
+    <section class="section-card">
+      <div class="row" style="justify-content:space-between">
+        <span class="form-label">2. Delivery Address</span>
+        <span class="badge badge--success">Free Tracked Courier</span>
+      </div>
+      <div class="form-group">
+        <label for="ship-name" class="t-meta" style="font-size:var(--text-xs)">Full Name</label>
+        <input id="ship-name" type="text" class="input-field" value="Alex Morgan" required>
+      </div>
+      <div class="form-group">
+        <label for="ship-address" class="t-meta" style="font-size:var(--text-xs)">Street Address</label>
+        <input id="ship-address" type="text" class="input-field" value="74 Highbury Hill, Flat 3B" required>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="ship-city" class="t-meta" style="font-size:var(--text-xs)">City</label>
+          <input id="ship-city" type="text" class="input-field" value="London" required>
+        </div>
+        <div class="form-group">
+          <label for="ship-postal" class="t-meta" style="font-size:var(--text-xs)">Postcode</label>
+          <input id="ship-postal" type="text" class="input-field" value="N5 1AU" required>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Payment Method (Stripe Elements) -->
+    <section class="section-card">
+      <div class="row" style="justify-content:space-between">
+        <span class="form-label">3. Payment Details</span>
+        <span class="t-meta" style="font-size:var(--text-xs)">Stripe 256-Bit SSL</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:var(--space-2)">
+        <label class="payment-option-row payment-option-row--active">
+          <span style="display:flex; align-items:center; gap:var(--space-2); font-size:var(--text-sm)">
+            <input type="radio" name="pay-method" checked>
+            <span style="font-weight:var(--weight-semibold)">Credit or Debit Card</span>
+          </span>
+          <i data-lucide="shield-check" style="color:var(--accent-primary); width:18px; height:18px" aria-hidden="true"></i>
+        </label>
+
+        <!-- Card Elements Mock -->
+        <div style="display:flex; flex-direction:column; gap:var(--space-2); padding:var(--space-2) 0">
+          <div class="form-group">
+            <label for="card-num" class="t-meta" style="font-size:var(--text-xs)">Card Number</label>
+            <input id="card-num" type="text" class="input-field" value="•••• •••• •••• 4242" style="font-family:var(--font-mono)">
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="card-exp" class="t-meta" style="font-size:var(--text-xs)">Expires</label>
+              <input id="card-exp" type="text" class="input-field" value="12/28" style="font-family:var(--font-mono)">
+            </div>
+            <div class="form-group">
+              <label for="card-cvc" class="t-meta" style="font-size:var(--text-xs)">CVC</label>
+              <input id="card-cvc" type="text" class="input-field" value="•••" style="font-family:var(--font-mono)">
+            </div>
+          </div>
+        </div>
+
+        <label class="payment-option-row">
+          <span style="display:flex; align-items:center; gap:var(--space-2); font-size:var(--text-sm)">
+            <input type="radio" name="pay-method">
+            <span>Klarna · 4 × 48.75 USD interest-free</span>
+          </span>
+          <span class="t-meta" style="font-size:var(--text-xs)">Pay Later</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Order Review Card -->
+    <section class="section-card">
+      <h2 class="t-title" style="font-size:var(--text-base); margin:0">Order Review (2 Items)</h2>
+      <div class="summary-row">
+        <span>Arsenal 24/25 Home (Saka #07 + PL Badge)</span>
+        <span class="num">105.00 USD</span>
+      </div>
+      <div class="summary-row">
+        <span>Real Madrid Champions Edition</span>
+        <span class="num">90.00 USD</span>
+      </div>
+      <div class="summary-row">
+        <span>Tracked Courier Delivery</span>
+        <span class="badge badge--success">FREE</span>
+      </div>
+      <div class="summary-row">
+        <span>Turnstile Authenticity Security Cert</span>
+        <span class="badge badge--info">INCLUDED</span>
+      </div>
+      <div class="summary-row summary-total">
+        <span>Order Total Due</span>
+        <span class="num t-title" style="color:var(--text-primary); font-size:var(--text-lg)">195.00 USD</span>
+      </div>
+    </section>
+
+    <!-- Signature Element: Final Turnstile Clearance Pass -->
+    <section>
+      <div class="auth-ticket">
+        <div class="auth-ticket-header">
+          <span class="t-eyebrow">KitRoom Vault Clearance</span>
+          <span class="auth-ticket-stamp">READY FOR EMISSION</span>
+        </div>
+        <div class="auth-ticket-body">
+          <div>
+            <span class="auth-ticket-meta">Official Turnstile Clearance</span>
+            <div class="auth-ticket-squad" style="font-size:var(--text-xl)">ORDER VERIFICATION PASS</div>
+          </div>
+          <i data-lucide="award" style="width:32px; height:32px; color:var(--accent-primary)" aria-hidden="true"></i>
+        </div>
+        <div class="auth-ticket-meta">Pass #KT-CHK-8891 · Cryptographic Turnstile certificate will be generated upon authorization.</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sticky Bottom Checkout Bar -->
+  <aside class="sticky-bottom-bar" aria-label="Confirm purchase action">
+    <div>
+      <span class="t-meta" style="font-size:var(--text-xs); display:block">Total Due</span>
+      <span class="num t-title" style="font-size:var(--text-xl); color:var(--text-primary)">195.00 USD</span>
+    </div>
+
+    <a href="order-success.html" class="btn btn--primary" style="flex:1; justify-content:center">
+      <i data-lucide="shield-check" aria-hidden="true"></i>
+      <span>Pay 195.00 USD & Issue Cert</span>
+    </a>
+  </aside>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

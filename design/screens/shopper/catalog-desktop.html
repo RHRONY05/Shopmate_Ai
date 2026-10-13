@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S2 · Storefront Catalog (Desktop) — ShopMate AI</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../kit.css">
+<script>/* the canvas passes ?theme=dark */(function(){var t=new URLSearchParams(location.search).get("theme");if(t)document.documentElement.dataset.theme=t;})();</script>
+<style>
+  body {
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+  }
+
+  /* Desktop Top Header */
+  .desktop-header {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+  }
+  .header-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: var(--space-3) var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+  .brand-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    color: inherit;
+  }
+  .brand-crest {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-primary);
+    color: var(--btn-text);
+    display: grid;
+    place-items: center;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    transition: color var(--dur-fast);
+  }
+  .nav-links a:hover, .nav-links a[aria-current="page"] {
+    color: var(--accent-primary);
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    padding: var(--space-1) var(--space-3);
+    min-width: 320px;
+    height: var(--touch-min);
+  }
+  .search-bar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    width: 100%;
+    height: 100%;
+    min-height: var(--touch-min);
+  }
+
+  /* Catalog Container Layout */
+  .layout-container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-6) var(--space-12);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  /* Catalog Header Banner */
+  .catalog-header-bar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: var(--space-5);
+  }
+
+  /* Controls & Quick Prompts Row */
+  .controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-2) 0;
+  }
+  .ai-chips-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  /* Split Layout: 280px Filter Rail + 3-Column Product Grid */
+  .catalog-split {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  /* Filter Rail */
+  .filter-rail {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    position: sticky;
+    top: calc(var(--touch-min) + var(--space-8));
+  }
+  .filter-group-title {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--space-2);
+  }
+  .filter-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .filter-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-2);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    min-height: var(--touch-min);
+  }
+  .filter-option:hover, .filter-option--active {
+    background: var(--bg-card-hover);
+    color: var(--btn-hover);
+    font-weight: var(--weight-medium);
+  }
+  [data-theme="dark"] .filter-option:hover, [data-theme="dark"] .filter-option--active {
+    color: var(--accent-primary);
+  }
+
+  .active-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    background: var(--bg-card-hover);
+    color: var(--btn-hover);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    padding: 0 var(--space-2);
+    min-height: var(--touch-min);
+    cursor: pointer;
+  }
+  [data-theme="dark"] .active-filter-pill {
+    color: var(--accent-primary);
+  }
+
+  /* 3-Column Product Grid */
+  .product-grid-desktop {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: var(--border-subtle);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    width: 35%;
+    background: var(--accent-primary);
+    border-radius: var(--radius-pill);
+  }
+
+  .link-action {
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    color: var(--btn-hover);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+    padding: 0 var(--space-2);
+  }
+  [data-theme="dark"] .link-action {
+    color: var(--accent-primary);
+  }
+
+  /* Desktop Footer */
+  .desktop-footer {
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    padding: var(--space-12) var(--space-6) var(--space-8);
+    margin-top: var(--space-12);
+  }
+  .footer-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--space-8);
+  }
+</style>
+</head>
+<body>
+  <!-- Desktop Header -->
+  <header class="desktop-header">
+    <div class="header-inner">
+      <div style="display:flex; align-items:center; gap:var(--space-8)">
+        <a href="home-desktop.html" class="brand-group">
+          <div class="brand-crest">
+            <i data-lucide="shield" aria-hidden="true"></i>
+          </div>
+          <div>
+            <span class="t-eyebrow" style="font-size:var(--text-xs); display:block; line-height:1">KitRoom Authenticated</span>
+            <span class="t-title" style="font-size:var(--text-lg); line-height:1.2">ShopMate AI</span>
+          </div>
+        </a>
+
+        <nav aria-label="Primary Navigation">
+          <ul class="nav-links">
+            <li><a href="home-desktop.html">Featured</a></li>
+            <li><a href="catalog-desktop.html" aria-current="page">All Matchday Kits</a></li>
+            <li><a href="catalog-desktop.html">Premier League</a></li>
+            <li><a href="catalog-desktop.html">La Liga</a></li>
+            <li><a href="catalog-desktop.html">Retro Vault</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:var(--space-4)">
+        <div class="search-bar">
+          <i data-lucide="search" style="color:var(--text-muted)" aria-hidden="true"></i>
+          <input type="search" placeholder="Search 42 authenticated club kits…" aria-label="Search catalog">
+          <span class="kbd">⌘K</span>
+        </div>
+
+        <button type="button" class="btn btn--outline" aria-label="Voice Search" style="gap:var(--space-2)">
+          <i data-lucide="mic" style="color:var(--accent-primary)" aria-hidden="true"></i>
+          <span>Voice</span>
+        </button>
+
+        <button type="button" class="btn btn--primary" aria-label="KitBot AI Copilot" style="gap:var(--space-2)">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+          <span>KitBot AI</span>
+        </button>
+
+        <a href="cart-desktop.html" class="btn btn--ghost btn--icon" aria-label="Shopping bag with 1 item" style="position:relative">
+          <i data-lucide="shopping-bag" aria-hidden="true"></i>
+          <span style="position:absolute; top:var(--space-1); right:var(--space-1); background:var(--accent-primary); color:var(--btn-text); font-size:var(--text-xs); font-weight:var(--weight-bold); min-width:var(--space-4); height:var(--space-4); border-radius:var(--radius-pill); display:grid; place-items:center; padding:0 var(--space-1)">1</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout-container">
+    <!-- Breadcrumb & Catalog Headline -->
+    <section class="catalog-header-bar">
+      <div style="display:flex; align-items:center; gap:var(--space-2)">
+        <a href="home-desktop.html" class="link-action t-meta" style="padding:0">Storefront</a>
+        <span class="t-meta">/</span>
+        <span class="t-meta" style="color:var(--text-primary); font-weight:var(--weight-medium)">European Matchday Catalog</span>
+      </div>
+      <div class="row" style="justify-content:space-between; align-items:flex-end">
+        <div>
+          <h1 class="t-display" style="font-size:var(--text-3xl); line-height:1.2; margin:0">
+            European Matchday Kits
+          </h1>
+          <p class="t-meta" style="font-size:var(--text-base); margin-top:var(--space-1)">
+            Official player-specification jerseys with verified club crests, matchday serial badges, and Turnstile Cert authentication.
+          </p>
+        </div>
+        <span class="badge badge--success" style="font-size:var(--text-sm)">42 Certified Drops Available</span>
+      </div>
+    </section>
+
+    <!-- Controls Row: AI Prompts + Sorting & Result Count -->
+    <section class="controls-row">
+      <div class="ai-chips-group">
+        <span class="voice-pill-mic"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+        <button type="button" class="chip">"Show Barcelona retro kits under 130 USD"</button>
+        <button type="button" class="chip">"Arsenal 1998 away in L"</button>
+        <button type="button" class="chip">"Sort by lowest stock"</button>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:var(--space-3)">
+        <span class="t-meta" style="font-size:var(--text-sm)">Sort by:</span>
+        <select class="input" style="min-height:var(--touch-min); padding:0 var(--space-3); font-size:var(--text-sm); width:auto" aria-label="Sort products">
+          <option>Popular Matchday Drops</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Newest Vault Drop</option>
+          <option>Lowest Stock Remaining</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Split View: Filter Rail + 3-Col Product Grid -->
+    <section class="catalog-split">
+      <!-- Left Sticky Filter Rail -->
+      <aside class="filter-rail">
+        <div>
+          <div class="row" style="justify-content:space-between; margin-bottom:var(--space-2)">
+            <span class="filter-group-title" style="margin:0">Active Filters</span>
+            <button type="button" class="link-action t-meta" style="font-size:var(--text-xs); padding:0">Reset All</button>
+          </div>
+          <div class="row-wrap" style="gap:var(--space-1)">
+            <span class="active-filter-pill">
+              <span>Premier League</span>
+              <i data-lucide="x" style="width:14px; height:14px" aria-hidden="true"></i>
+            </span>
+            <span class="active-filter-pill">
+              <span>Authentic Spec</span>
+              <i data-lucide="x" style="width:14px; height:14px" aria-hidden="true"></i>
+            </span>
+            <span class="active-filter-pill">
+              <span>In Stock</span>
+              <i data-lucide="x" style="width:14px; height:14px" aria-hidden="true"></i>
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <div class="filter-group-title">Competitions</div>
+          <div class="filter-list">
+            <a href="#" class="filter-option filter-option--active">
+              <span>All Leagues</span>
+              <span class="badge">42</span>
+            </a>
+            <a href="#" class="filter-option">
+              <span>Premier League</span>
+              <span class="t-meta">18</span>
+            </a>
+            <a href="#" class="filter-option">
+              <span>La Liga</span>
+              <span class="t-meta">12</span>
+            </a>
+            <a href="#" class="filter-option">
+              <span>Serie A</span>
+              <span class="t-meta">8</span>
+            </a>
+            <a href="#" class="filter-option">
+              <span>Retro Vault</span>
+              <span class="t-meta">4</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <div class="filter-group-title">Kit Edition</div>
+          <div class="filter-list">
+            <label class="filter-option" style="cursor:pointer">
+              <span style="display:flex; align-items:center; gap:var(--space-2)">
+                <input type="checkbox" checked>
+                <span>Authentic Matchday</span>
+              </span>
+              <span class="t-meta">32</span>
+            </label>
+            <label class="filter-option" style="cursor:pointer">
+              <span style="display:flex; align-items:center; gap:var(--space-2)">
+                <input type="checkbox">
+                <span>Fan Stadium Replica</span>
+              </span>
+              <span class="t-meta">10</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <div class="filter-group-title">Sizing Available</div>
+          <div class="row-wrap" style="gap:var(--space-2)">
+            <button type="button" class="size-pill">S</button>
+            <button type="button" class="size-pill size-pill--selected" aria-selected="true">M</button>
+            <button type="button" class="size-pill size-pill--selected" aria-selected="true">L</button>
+            <button type="button" class="size-pill">XL</button>
+            <button type="button" class="size-pill size-pill--disabled" disabled>XXL</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="filter-group-title">Stock Guarantee</div>
+          <div class="filter-list">
+            <label class="filter-option" style="cursor:pointer">
+              <span style="display:flex; align-items:center; gap:var(--space-2)">
+                <input type="radio" name="stock-filter" checked>
+                <span>In Stock & Low Stock</span>
+              </span>
+            </label>
+            <label class="filter-option" style="cursor:pointer">
+              <span style="display:flex; align-items:center; gap:var(--space-2)">
+                <input type="radio" name="stock-filter">
+                <span>Vault Exclusives Only</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right 3-Column Product Grid -->
+      <div>
+        <div class="product-grid-desktop">
+          <!-- Card 1 -->
+          <article class="kit-card">
+            <div class="ph kit-card-img">Photo — Arsenal FC 2024/25 Authentic Home Kit · 3:4</div>
+            <div>
+              <div class="row" style="justify-content:space-between">
+                <span class="t-eyebrow">Arsenal FC · Premier League</span>
+                <span class="badge badge--success">In Stock (8 left)</span>
+              </div>
+              <h2 class="t-title" style="font-size:var(--text-base); margin-top:var(--space-1)">2024/25 Authentic Home Kit</h2>
+              <p class="t-meta" style="font-size:var(--text-xs); margin-top:var(--space-1)">Heat-sealed cannon crest, jacquard ventilation weave.</p>
+              <div class="row" style="justify-content:space-between; padding:var(--space-1) 0">
+                <span class="num t-title" style="color:var(--text-primary)">85.00 USD</span>
+                <span class="t-meta" style="font-size:var(--text-xs)">Cert #KT-2401</span>
+              </div>
+            </div>
+            <div class="row-wrap" style="gap:var(--space-1)">
+              <button type="button" class="size-pill">S</button>
+              <button type="button" class="size-pill">M</button>
+              <button type="button" class="size-pill size-pill--selected" aria-selected="true">L</button>
+              <button type="button" class="size-pill">XL</button>
+              <button type="button" class="size-pill size-pill--disabled" disabled>XXL</button>
+            </div>
+            <button type="button" class="btn btn--primary btn--block">
+              <i data-lucide="shopping-bag" aria-hidden="true"></i>
+              <span>Add to Bag (85.00 USD)</span>
+            </button>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="kit-card">
+            <div class="ph kit-card-img">Photo — Real Madrid 2024/25 European Champions Edition · 3:4</div>
+            <div>
+              <div class="row" style="justify-content:space-between">
+                <span class="t-eyebrow">Real Madrid · La Liga</span>
+                <span class="badge badge--warning">Low Stock (2 left)</span>
+              </div>
+              <h2 class="t-title" style="font-size:var(--text-base); margin-top:var(--space-1)">European Champions Edition</h2>
+              <p class="t-meta" style="font-size:var(--text-xs); margin-top:var(--space-1)">Gold celebratory embroidery, official 15-trophy star badge.</p>
+              <div class="row" style="justify-content:space-between; padding:var(--space-1) 0">
+                <span class="num t-title" style="color:var(--text-primary)">90.00 USD</span>
+                <span class="t-meta" style="font-size:var(--text-xs)">Cert #KT-2402</span>
+              </div>
+            </div>
+            <div class="row-wrap" style="gap:var(--space-1)">
+              <button type="button" class="size-pill">S</button>
+              <button type="button" class="size-pill size-pill--selected" aria-selected="true">M</button>
+              <button type="button" class="size-pill">L</button>
+              <button type="button" class="size-pill">XL</button>
+              <button type="button" class="size-pill size-pill--disabled" disabled>XXL</button>
+            </div>
+            <button type="button" class="btn btn--primary btn--block">
+              <i data-lucide="shopping-bag" aria-hidden="true"></i>
+              <span>Add to Bag (90.00 USD)</span>
+            </button>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="kit-card">
+            <div class="ph kit-card-img">Photo — Inter Milan 2024/25 Centenario Authentic Edition · 3:4</div>
+            <div>
+              <div class="row" style="justify-content:space-between">
+                <span class="t-eyebrow">Inter Milan · Serie A</span>
+                <span class="badge badge--success">In Stock (14 left)</span>
+              </div>
+              <h2 class="t-title" style="font-size:var(--text-base); margin-top:var(--space-1)">Centenario Authentic Edition</h2>
+              <p class="t-meta" style="font-size:var(--text-xs); margin-top:var(--space-1)">Two-star scudetto badge, diagonal architectural pattern.</p>
+              <div class="row" style="justify-content:space-between; padding:var(--space-1) 0">
+                <span class="num t-title" style="color:var(--text-primary)">88.00 USD</span>
+                <span class="t-meta" style="font-size:var(--text-xs)">Cert #KT-2403</span>
+              </div>
+            </div>
+            <div class="row-wrap" style="gap:var(--space-1)">
+              <button type="button" class="size-pill">S</button>
+              <button type="button" class="size-pill size-pill--selected" aria-selected="true">M</button>
+              <button type="button" class="size-pill">L</button>
+              <button type="button" class="size-pill">XL</button>
+              <button type="button" class="size-pill size-pill--disabled" disabled>XXL</button>
+            </div>
+            <button type="button" class="btn btn--primary btn--block">
+              <i data-lucide="shopping-bag" aria-hidden="true"></i>
+              <span>Add to Bag (88.00 USD)</span>
+            </button>
+          </article>
+
+          <!-- Card 4 (Retro Vault) -->
+          <article class="kit-card">
+            <div class="ph kit-card-img">Photo — FC Barcelona 1999 Centenary Retro Home · 3:4</div>
+            <div>
+              <div class="row" style="justify-content:space-between">
+                <span class="t-eyebrow">FC Barcelona · Retro Vault</span>
+                <span class="badge badge--warning">Vault (3 left)</span>
+              </div>
+              <h2 class="t-title" style="font-size:var(--text-base); margin-top:var(--space-1)">1999 Centenary Retro Home</h2>
+              <p class="t-meta" style="font-size:var(--text-xs); margin-top:var(--space-1)">Halved blaugrana design, 1899-1999 chest crest.</p>
+              <div class="row" style="justify-content:space-between; padding:var(--space-1) 0">
+                <span class="num t-title" style="color:var(--text-primary)">120.00 USD</span>
+                <span class="t-meta" style="font-size:var(--text-xs)">Cert #KT-1999</span>
+              </div>
+            </div>
+            <div class="row-wrap" style="gap:var(--space-1)">
+              <button type="button" class="size-pill size-pill--disabled" disabled>S</button>
+              <button type="button" class="size-pill">M</button>
+              <button type="button" class="size-pill size-pill--selected" aria-selected="true">L</button>
+              <button type="button" class="size-pill size-pill--disabled" disabled>XL</button>
+              <button type="button" class="size-pill size-pill--disabled" disabled>XXL</button>
+            </div>
+            <button type="button" class="btn btn--primary btn--block">
+              <i data-lucide="shopping-bag" aria-hidden="true"></i>
+              <span>Add to Bag (120.00 USD)</span>
+            </button>
+          </article>
+
+          <!-- Card 5 (Retro Vault) -->
+          <article class="kit-card">
+            <div class="ph kit-card-img">Photo — Manchester United 1998/99 Treble Away Kit · 3:4</div>
+            <div>
+              <div class="row" style="justify-content:space-between">
+                <span class="t-eyebrow">Man United · Retro Vault</span>
+                <span class="badge badge--error">Rare (1 left)</span>
+              </div>
+              <h2 class="t-title" style="font-size:var(--text-base); margin-top:var(--space-1)">1998/99 Treble Away Kit</h2>
+              <p class="t-meta" style="font-size:var(--text-xs); margin-top:var(--space-1)">Iconic white & black zip collar, Beckham #07 authentic print.</p>
+              <div class="row" style="justify-content:space-between; padding:var(--space-1) 0">
+                <span class="num t-title" style="color:var(--text-primary)">135.00 USD</span>
+                <span class="t-meta" style="font-size:var(--text-xs)">Cert #KT-1998</span>
+              </div>
+            </div>
+            <div class="row-wrap" style="gap:var(--space-1)">
+              <button type="button" class="size-pill size-pill--disabled" disabled>S</button>
+              <button type="button" class="size-pill size-pill--disabled" disabled>M</button>
+              <button type="button" class="size-pill size-pill--selected" aria-selected="true">L</button>
+              <button type="button" class="size-pill size-pill--selected">XL</button>
+              <button type="button" class="size-pill size-pill--disabled" disabled>XXL</button>
+            </div>
+            <button type="button" class="btn btn--primary btn--block">
+              <i data-lucide="shopping-bag" aria-hidden="true"></i>
+              <span>Add to Bag (135.00 USD)</span>
+            </button>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="kit-card">
+            <div class="ph kit-card-img">Photo — AC Milan 2006/07 Athens Champions Retro · 3:4</div>
+            <div>
+              <div class="row" style="justify-content:space-between">
+                <span class="t-eyebrow">AC Milan · Retro Vault</span>
+                <span class="badge badge--warning">Vault (2 left)</span>
+              </div>
+              <h2 class="t-title" style="font-size:var(--text-base); margin-top:var(--space-1)">2006/07 Athens Final Edition</h2>
+              <p class="t-meta" style="font-size:var(--text-xs); margin-top:var(--space-1)">All-white good luck jersey, gold star embroidery, Inzaghi #09.</p>
+              <div class="row" style="justify-content:space-between; padding:var(--space-1) 0">
+                <span class="num t-title" style="color:var(--text-primary)">125.00 USD</span>
+                <span class="t-meta" style="font-size:var(--text-xs)">Cert #KT-2007</span>
+              </div>
+            </div>
+            <div class="row-wrap" style="gap:var(--space-1)">
+              <button type="button" class="size-pill">S</button>
+              <button type="button" class="size-pill size-pill--selected" aria-selected="true">M</button>
+              <button type="button" class="size-pill">L</button>
+              <button type="button" class="size-pill size-pill--disabled" disabled>XL</button>
+              <button type="button" class="size-pill size-pill--disabled" disabled>XXL</button>
+            </div>
+            <button type="button" class="btn btn--primary btn--block">
+              <i data-lucide="shopping-bag" aria-hidden="true"></i>
+              <span>Add to Bag (125.00 USD)</span>
+            </button>
+          </article>
+        </div>
+
+        <!-- Pagination & Result Count -->
+        <div style="display:flex; flex-direction:column; gap:var(--space-4); align-items:center; text-align:center; padding:var(--space-8) 0 var(--space-4)">
+          <div style="width:100%; max-width:320px; display:flex; flex-direction:column; gap:var(--space-2)">
+            <span class="t-meta" style="font-size:var(--text-sm)">Showing 6 of 42 Authenticated Drops</span>
+            <div class="progress-bar-bg" role="progressbar" aria-valuenow="6" aria-valuemin="0" aria-valuemax="42">
+              <div class="progress-bar-fill"></div>
+            </div>
+          </div>
+          <div class="row" style="gap:var(--space-3)">
+            <button type="button" class="btn btn--outline" style="min-width:180px">
+              <span>Load Next 6 Kits</span>
+              <i data-lucide="arrow-down" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Signature Element: Authentication Ticket Banner -->
+    <section>
+      <div class="auth-ticket">
+        <div class="auth-ticket-header">
+          <div style="display:flex; align-items:center; gap:var(--space-3)">
+            <i data-lucide="shield-check" style="color:var(--accent-primary)" aria-hidden="true"></i>
+            <span class="t-eyebrow">KitRoom Vault Security Standard</span>
+          </div>
+          <span class="auth-ticket-stamp">100% Certified Authentic</span>
+        </div>
+        <div class="auth-ticket-body">
+          <div>
+            <span class="auth-ticket-meta">Official Catalog Guarantee</span>
+            <div class="auth-ticket-squad" style="font-size:var(--text-2xl)">TURNSTILE VERIFIED SQUAD CATALOG</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:var(--space-4)">
+            <span class="badge badge--success">Archive Matched</span>
+            <i data-lucide="award" style="width:40px; height:40px; color:var(--accent-primary)" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="auth-ticket-meta">Every jersey in this catalog includes cryptographic turnstile serial verification and official club archive provenance.</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Desktop Footer -->
+  <footer class="desktop-footer">
+    <div class="footer-inner">
+      <div>
+        <div style="display:flex; align-items:center; gap:var(--space-2); margin-bottom:var(--space-3)">
+          <div class="brand-crest" style="width:28px; height:28px">
+            <i data-lucide="shield" style="width:16px; height:16px" aria-hidden="true"></i>
+          </div>
+          <span class="t-title" style="font-size:var(--text-base)">ShopMate AI · KitRoom</span>
+        </div>
+        <p class="t-meta" style="font-size:var(--text-sm); max-width:320px">
+          The autonomous football kitroom powered by AI search, voice ordering, and cryptographically verified matchday certification.
+        </p>
+      </div>
+
+      <div>
+        <div class="filter-group-title">Competitions</div>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:var(--space-2)">
+          <li><a href="#" class="t-meta link-action">Premier League</a></li>
+          <li><a href="#" class="t-meta link-action">La Liga</a></li>
+          <li><a href="#" class="t-meta link-action">Serie A</a></li>
+          <li><a href="#" class="t-meta link-action">Retro Vault</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="filter-group-title">Guarantees</div>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:var(--space-2)">
+          <li><a href="#" class="t-meta link-action">Turnstile Cert</a></li>
+          <li><a href="#" class="t-meta link-action">Squad Badges</a></li>
+          <li><a href="#" class="t-meta link-action">Authenticity Checks</a></li>
+          <li><a href="#" class="t-meta link-action">Returns Policy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="filter-group-title">System Status</div>
+        <div style="display:flex; flex-direction:column; gap:var(--space-2)">
+          <span class="badge badge--success" style="align-self:start"><i data-lucide="check-circle" aria-hidden="true"></i> AI Copilot Online</span>
+          <span class="t-meta" style="font-size:var(--text-xs)">Latency: 18ms · SSE Active</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

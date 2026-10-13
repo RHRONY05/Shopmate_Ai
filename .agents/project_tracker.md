@@ -2,8 +2,8 @@
 
 > **Current Project Status**  
 > **Current Phase:** Phase 5 — Frontend Design System & Redux Toolkit Shell  
-> **Last Completed Action:** Phase 4 Complete — AI Shopping Agent Engine (pgvector semantic search, 4 Zod tools, Redis multi-turn session memory, SSE streaming endpoint `POST /api/ai/chat`) with 67 passing tests. All Backend APIs (Catalog, Cart, Auth, Stripe, pgvector, AI) 100% finished and verified!  
-> **Active Action (In Progress):** Module 5.1 — Establish kitroom design tokens in `index.css` (athletic dark/light palettes, pitch-green accents, typography tokens)  
+> **Last Completed Action:** Design Canvas Screens Approved (`/design-canvas` complete: Component Kit + S1 through S6 Phone & Desktop artboards verified at 26 renders, 0 errors, 0 warnings).  
+> **Active Action (In Progress):** Ready for Module 5.2 — Redux Toolkit Setup (`cartSlice`, `copilotSlice`, typed hooks)  
 > **Next Immediate Action:** Module 5.2 — Redux Toolkit Setup (`cartSlice`, `copilotSlice`, typed hooks)  
 
 ---
@@ -71,7 +71,7 @@
 ## Phase 5: Frontend Design System & Redux Toolkit Shell
 *What You'll Learn: Modern Redux Toolkit (`createSlice`, typed hooks), Design Tokens, and the Web Speech API.*
 
-- [ ] 5.1 Establish kitroom design tokens in `index.css` (athletic dark/light palettes, pitch-green accents, typography tokens)
+- [x] 5.1 Establish kitroom design tokens in `index.css` (Stadium Matchday & Pitch Emerald, Cinzel + Libre Baskerville)
 - [ ] 5.2 **Redux Toolkit Setup:** Configure typed store, create `cartSlice` and `copilotSlice` with typed actions and selectors
 - [ ] 5.3 Build Global Navigation Shell (Header, League MegaMenu, Search bar trigger, Redux cart badge, Clerk Auth modal)
 - [ ] 5.4 Build persistent slide-out AI KitBot Copilot Drawer with streaming message bubble renderer
