@@ -15,7 +15,10 @@
     "test": "npm run test:backend && npm run test:frontend",
     "lint:backend": "npm run lint --prefix backend",
     "lint:frontend": "npm run lint --prefix frontend",
-    "lint": "npm run lint:backend && npm run lint:frontend"
+    "lint": "npm run lint:backend && npm run lint:frontend",
+    "db:docs": "node scripts/db-docs.mjs doc",
+    "db:docs:check": "node scripts/db-docs.mjs diff",
+    "db:lint": "node scripts/db-docs.mjs lint"
   },
   "devDependencies": {
     "concurrently": "^9.2.4"

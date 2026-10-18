@@ -1,0 +1,1186 @@
+{
+  "name": "ShopMate AI",
+  "tables": [
+    {
+      "name": "public.users",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "clerkId",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "role",
+          "type": "\"Role\"",
+          "nullable": false,
+          "default": "'CUSTOMER'::\"Role\""
+        },
+        {
+          "name": "favoriteClub",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "defaultSize",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "createdAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updatedAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "users_pkey",
+          "def": "CREATE UNIQUE INDEX users_pkey ON public.users USING btree (id)",
+          "table": "public.users",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "users_clerkId_key",
+          "def": "CREATE UNIQUE INDEX \"users_clerkId_key\" ON public.users USING btree (\"clerkId\")",
+          "table": "public.users",
+          "columns": [
+            "clerkId"
+          ]
+        },
+        {
+          "name": "users_email_key",
+          "def": "CREATE UNIQUE INDEX users_email_key ON public.users USING btree (email)",
+          "table": "public.users",
+          "columns": [
+            "email"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "users_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.users",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public.clubs",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "slug",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "league",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "country",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "logoUrl",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "createdAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updatedAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "clubs_pkey",
+          "def": "CREATE UNIQUE INDEX clubs_pkey ON public.clubs USING btree (id)",
+          "table": "public.clubs",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "clubs_slug_key",
+          "def": "CREATE UNIQUE INDEX clubs_slug_key ON public.clubs USING btree (slug)",
+          "table": "public.clubs",
+          "columns": [
+            "slug"
+          ]
+        },
+        {
+          "name": "clubs_league_idx",
+          "def": "CREATE INDEX clubs_league_idx ON public.clubs USING btree (league)",
+          "table": "public.clubs",
+          "columns": [
+            "league"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "clubs_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.clubs",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public.jerseys",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "clubId",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "slug",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "kitType",
+          "type": "\"KitType\"",
+          "nullable": false
+        },
+        {
+          "name": "season",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "era",
+          "type": "\"Era\"",
+          "nullable": false,
+          "default": "'MODERN'::\"Era\""
+        },
+        {
+          "name": "basePrice",
+          "type": "numeric(10,2)",
+          "nullable": false
+        },
+        {
+          "name": "isFeatured",
+          "type": "boolean",
+          "nullable": false,
+          "default": "false"
+        },
+        {
+          "name": "images",
+          "type": "text[]",
+          "nullable": true
+        },
+        {
+          "name": "rating",
+          "type": "double precision",
+          "nullable": false,
+          "default": "5.0"
+        },
+        {
+          "name": "createdAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updatedAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "jerseys_pkey",
+          "def": "CREATE UNIQUE INDEX jerseys_pkey ON public.jerseys USING btree (id)",
+          "table": "public.jerseys",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "jerseys_slug_key",
+          "def": "CREATE UNIQUE INDEX jerseys_slug_key ON public.jerseys USING btree (slug)",
+          "table": "public.jerseys",
+          "columns": [
+            "slug"
+          ]
+        },
+        {
+          "name": "jerseys_clubId_kitType_season_idx",
+          "def": "CREATE INDEX \"jerseys_clubId_kitType_season_idx\" ON public.jerseys USING btree (\"clubId\", \"kitType\", season)",
+          "table": "public.jerseys",
+          "columns": [
+            "clubId",
+            "kitType",
+            "season"
+          ]
+        },
+        {
+          "name": "jerseys_isFeatured_idx",
+          "def": "CREATE INDEX \"jerseys_isFeatured_idx\" ON public.jerseys USING btree (\"isFeatured\")",
+          "table": "public.jerseys",
+          "columns": [
+            "isFeatured"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "jerseys_clubId_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (\"clubId\") REFERENCES clubs(id) ON UPDATE CASCADE ON DELETE CASCADE",
+          "table": "public.jerseys",
+          "referenced_table": "public.clubs",
+          "columns": [
+            "clubId"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "jerseys_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.jerseys",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public.jersey_variants",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "jerseyId",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "size",
+          "type": "\"Size\"",
+          "nullable": false
+        },
+        {
+          "name": "stockQuantity",
+          "type": "integer",
+          "nullable": false,
+          "default": "0"
+        },
+        {
+          "name": "sku",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "createdAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updatedAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "jersey_variants_pkey",
+          "def": "CREATE UNIQUE INDEX jersey_variants_pkey ON public.jersey_variants USING btree (id)",
+          "table": "public.jersey_variants",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "jersey_variants_sku_key",
+          "def": "CREATE UNIQUE INDEX jersey_variants_sku_key ON public.jersey_variants USING btree (sku)",
+          "table": "public.jersey_variants",
+          "columns": [
+            "sku"
+          ]
+        },
+        {
+          "name": "jersey_variants_jerseyId_size_key",
+          "def": "CREATE UNIQUE INDEX \"jersey_variants_jerseyId_size_key\" ON public.jersey_variants USING btree (\"jerseyId\", size)",
+          "table": "public.jersey_variants",
+          "columns": [
+            "jerseyId",
+            "size"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "jersey_variants_jerseyId_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (\"jerseyId\") REFERENCES jerseys(id) ON UPDATE CASCADE ON DELETE CASCADE",
+          "table": "public.jersey_variants",
+          "referenced_table": "public.jerseys",
+          "columns": [
+            "jerseyId"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "jersey_variants_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.jersey_variants",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public.jersey_embeddings",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "jerseyId",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "embedding",
+          "type": "vector(768)",
+          "nullable": false
+        },
+        {
+          "name": "contentText",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "createdAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updatedAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "jersey_embeddings_pkey",
+          "def": "CREATE UNIQUE INDEX jersey_embeddings_pkey ON public.jersey_embeddings USING btree (id)",
+          "table": "public.jersey_embeddings",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "jersey_embeddings_jerseyId_key",
+          "def": "CREATE UNIQUE INDEX \"jersey_embeddings_jerseyId_key\" ON public.jersey_embeddings USING btree (\"jerseyId\")",
+          "table": "public.jersey_embeddings",
+          "columns": [
+            "jerseyId"
+          ]
+        },
+        {
+          "name": "jersey_embeddings_embedding_hnsw_idx",
+          "def": "CREATE INDEX jersey_embeddings_embedding_hnsw_idx ON public.jersey_embeddings USING hnsw (embedding vector_cosine_ops)",
+          "table": "public.jersey_embeddings",
+          "columns": [
+            "embedding"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "jersey_embeddings_jerseyId_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (\"jerseyId\") REFERENCES jerseys(id) ON UPDATE CASCADE ON DELETE CASCADE",
+          "table": "public.jersey_embeddings",
+          "referenced_table": "public.jerseys",
+          "columns": [
+            "jerseyId"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "jersey_embeddings_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.jersey_embeddings",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public.carts",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "userId",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "sessionId",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "\"CartStatus\"",
+          "nullable": false,
+          "default": "'ACTIVE'::\"CartStatus\""
+        },
+        {
+          "name": "createdAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updatedAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "carts_pkey",
+          "def": "CREATE UNIQUE INDEX carts_pkey ON public.carts USING btree (id)",
+          "table": "public.carts",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "carts_sessionId_key",
+          "def": "CREATE UNIQUE INDEX \"carts_sessionId_key\" ON public.carts USING btree (\"sessionId\")",
+          "table": "public.carts",
+          "columns": [
+            "sessionId"
+          ]
+        },
+        {
+          "name": "carts_userId_idx",
+          "def": "CREATE INDEX \"carts_userId_idx\" ON public.carts USING btree (\"userId\")",
+          "table": "public.carts",
+          "columns": [
+            "userId"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "carts_userId_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (\"userId\") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL",
+          "table": "public.carts",
+          "referenced_table": "public.users",
+          "columns": [
+            "userId"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "carts_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.carts",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public.cart_items",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "cartId",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "jerseyVariantId",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "integer",
+          "nullable": false,
+          "default": "1"
+        },
+        {
+          "name": "customName",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "customNumber",
+          "type": "integer",
+          "nullable": true
+        },
+        {
+          "name": "sleeveBadge",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "unitPrice",
+          "type": "numeric(10,2)",
+          "nullable": false
+        },
+        {
+          "name": "createdAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updatedAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "cart_items_pkey",
+          "def": "CREATE UNIQUE INDEX cart_items_pkey ON public.cart_items USING btree (id)",
+          "table": "public.cart_items",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "cart_items_cartId_jerseyVariantId_customName_customNumber_s_key",
+          "def": "CREATE UNIQUE INDEX \"cart_items_cartId_jerseyVariantId_customName_customNumber_s_key\" ON public.cart_items USING btree (\"cartId\", \"jerseyVariantId\", \"customName\", \"customNumber\", \"sleeveBadge\")",
+          "table": "public.cart_items",
+          "columns": [
+            "cartId",
+            "jerseyVariantId",
+            "customName",
+            "customNumber",
+            "sleeveBadge"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "cart_items_jerseyVariantId_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (\"jerseyVariantId\") REFERENCES jersey_variants(id) ON UPDATE CASCADE ON DELETE CASCADE",
+          "table": "public.cart_items",
+          "referenced_table": "public.jersey_variants",
+          "columns": [
+            "jerseyVariantId"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "cart_items_cartId_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (\"cartId\") REFERENCES carts(id) ON UPDATE CASCADE ON DELETE CASCADE",
+          "table": "public.cart_items",
+          "referenced_table": "public.carts",
+          "columns": [
+            "cartId"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "cart_items_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.cart_items",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public.orders",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "orderNumber",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "userId",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "guestEmail",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "\"OrderStatus\"",
+          "nullable": false,
+          "default": "'PENDING'::\"OrderStatus\""
+        },
+        {
+          "name": "totalAmount",
+          "type": "numeric(10,2)",
+          "nullable": false
+        },
+        {
+          "name": "stripePaymentIntentId",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "shippingAddress",
+          "type": "jsonb",
+          "nullable": true
+        },
+        {
+          "name": "createdAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updatedAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "orders_pkey",
+          "def": "CREATE UNIQUE INDEX orders_pkey ON public.orders USING btree (id)",
+          "table": "public.orders",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "orders_orderNumber_key",
+          "def": "CREATE UNIQUE INDEX \"orders_orderNumber_key\" ON public.orders USING btree (\"orderNumber\")",
+          "table": "public.orders",
+          "columns": [
+            "orderNumber"
+          ]
+        },
+        {
+          "name": "orders_stripePaymentIntentId_key",
+          "def": "CREATE UNIQUE INDEX \"orders_stripePaymentIntentId_key\" ON public.orders USING btree (\"stripePaymentIntentId\")",
+          "table": "public.orders",
+          "columns": [
+            "stripePaymentIntentId"
+          ]
+        },
+        {
+          "name": "orders_userId_idx",
+          "def": "CREATE INDEX \"orders_userId_idx\" ON public.orders USING btree (\"userId\")",
+          "table": "public.orders",
+          "columns": [
+            "userId"
+          ]
+        },
+        {
+          "name": "orders_status_idx",
+          "def": "CREATE INDEX orders_status_idx ON public.orders USING btree (status)",
+          "table": "public.orders",
+          "columns": [
+            "status"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "orders_userId_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (\"userId\") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL",
+          "table": "public.orders",
+          "referenced_table": "public.users",
+          "columns": [
+            "userId"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "orders_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.orders",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public.order_items",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "orderId",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "jerseyVariantId",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "customName",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "customNumber",
+          "type": "integer",
+          "nullable": true
+        },
+        {
+          "name": "sleeveBadge",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "priceAtPurchase",
+          "type": "numeric(10,2)",
+          "nullable": false
+        },
+        {
+          "name": "createdAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "order_items_pkey",
+          "def": "CREATE UNIQUE INDEX order_items_pkey ON public.order_items USING btree (id)",
+          "table": "public.order_items",
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "order_items_jerseyVariantId_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (\"jerseyVariantId\") REFERENCES jersey_variants(id) ON UPDATE CASCADE ON DELETE RESTRICT",
+          "table": "public.order_items",
+          "referenced_table": "public.jersey_variants",
+          "columns": [
+            "jerseyVariantId"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "order_items_orderId_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (\"orderId\") REFERENCES orders(id) ON UPDATE CASCADE ON DELETE CASCADE",
+          "table": "public.order_items",
+          "referenced_table": "public.orders",
+          "columns": [
+            "orderId"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "order_items_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.order_items",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public.processed_webhook_events",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "eventId",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "eventType",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "source",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "processedAt",
+          "type": "timestamp(3) without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "processed_webhook_events_pkey",
+          "def": "CREATE UNIQUE INDEX processed_webhook_events_pkey ON public.processed_webhook_events USING btree (id)",
+          "table": "public.processed_webhook_events",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "processed_webhook_events_eventId_key",
+          "def": "CREATE UNIQUE INDEX \"processed_webhook_events_eventId_key\" ON public.processed_webhook_events USING btree (\"eventId\")",
+          "table": "public.processed_webhook_events",
+          "columns": [
+            "eventId"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "processed_webhook_events_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.processed_webhook_events",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "table": "public.jerseys",
+      "columns": [
+        "clubId"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.clubs",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (\"clubId\") REFERENCES clubs(id) ON UPDATE CASCADE ON DELETE CASCADE"
+    },
+    {
+      "table": "public.jersey_variants",
+      "columns": [
+        "jerseyId"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.jerseys",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (\"jerseyId\") REFERENCES jerseys(id) ON UPDATE CASCADE ON DELETE CASCADE"
+    },
+    {
+      "table": "public.jersey_embeddings",
+      "columns": [
+        "jerseyId"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.jerseys",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (\"jerseyId\") REFERENCES jerseys(id) ON UPDATE CASCADE ON DELETE CASCADE"
+    },
+    {
+      "table": "public.carts",
+      "columns": [
+        "userId"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.users",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "zero_or_one",
+      "def": "FOREIGN KEY (\"userId\") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL"
+    },
+    {
+      "table": "public.cart_items",
+      "columns": [
+        "jerseyVariantId"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.jersey_variants",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (\"jerseyVariantId\") REFERENCES jersey_variants(id) ON UPDATE CASCADE ON DELETE CASCADE"
+    },
+    {
+      "table": "public.cart_items",
+      "columns": [
+        "cartId"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.carts",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (\"cartId\") REFERENCES carts(id) ON UPDATE CASCADE ON DELETE CASCADE"
+    },
+    {
+      "table": "public.orders",
+      "columns": [
+        "userId"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.users",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "zero_or_one",
+      "def": "FOREIGN KEY (\"userId\") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL"
+    },
+    {
+      "table": "public.order_items",
+      "columns": [
+        "jerseyVariantId"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.jersey_variants",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (\"jerseyVariantId\") REFERENCES jersey_variants(id) ON UPDATE CASCADE ON DELETE RESTRICT"
+    },
+    {
+      "table": "public.order_items",
+      "columns": [
+        "orderId"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.orders",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (\"orderId\") REFERENCES orders(id) ON UPDATE CASCADE ON DELETE CASCADE"
+    }
+  ],
+  "enums": [
+    {
+      "name": "public.CartStatus",
+      "values": [
+        "ABANDONED",
+        "ACTIVE",
+        "CONVERTED"
+      ]
+    },
+    {
+      "name": "public.Era",
+      "values": [
+        "MODERN",
+        "RETRO"
+      ]
+    },
+    {
+      "name": "public.KitType",
+      "values": [
+        "AWAY",
+        "GOALKEEPER",
+        "HOME",
+        "RETRO",
+        "THIRD"
+      ]
+    },
+    {
+      "name": "public.OrderStatus",
+      "values": [
+        "CANCELLED",
+        "PAID",
+        "PENDING",
+        "PROCESSING",
+        "SHIPPED"
+      ]
+    },
+    {
+      "name": "public.Role",
+      "values": [
+        "ADMIN",
+        "CUSTOMER"
+      ]
+    },
+    {
+      "name": "public.Size",
+      "values": [
+        "L",
+        "M",
+        "S",
+        "XL",
+        "XXL"
+      ]
+    }
+  ],
+  "driver": {
+    "name": "postgres",
+    "database_version": "PostgreSQL 16.15 (Debian 16.15-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "meta": {
+      "current_schema": "public",
+      "search_paths": [
+        "shopmate_user",
+        "public"
+      ],
+      "dict": {
+        "Functions": "Stored procedures and functions"
+      }
+    }
+  }
+}
