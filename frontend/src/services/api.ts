@@ -383,7 +383,7 @@ export async function streamAIChat(
         } else if (eventType === 'done') {
           callbacks.onComplete?.(payload.completeText || fullAccumulated);
         } else if (eventType === 'error') {
-          callbacks.onError?.(payload.error || 'AI generation encountered an issue');
+          callbacks.onError?.(payload.error || payload.message || 'AI generation encountered an issue');
         }
       } catch {
         // Fallback for non-JSON lines

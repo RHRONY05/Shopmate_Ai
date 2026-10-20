@@ -13,7 +13,17 @@ export interface AIServiceStreamCallbacks {
 }
 
 export class AIService {
-  private static readonly MODEL_NAME = 'gemini-2.5-flash';
+  private static getPrimaryModel(): string {
+    return config.geminiModel || process.env.GEMINI_MODEL || 'gemini-3.6-flash';
+  }
+
+  private static getFallbackModels(): string[] {
+    if (config.geminiFallbackModels && config.geminiFallbackModels.length > 0) {
+      return config.geminiFallbackModels;
+    }
+    return ['gemini-3.5-flash', 'gemini-3.5-flash-lite'];
+  }
+
   private static readonly SYSTEM_INSTRUCTION = `
 You are the ShopMate AI Senior Kitroom Stylist and Matchday Assistant.
 Your mission is to help football fans find the perfect kit, choose correct sizing, customize jerseys with badges and names, and manage their cart.
@@ -22,7 +32,9 @@ Guidelines:
 1. Tone: Passionate, knowledgeable football fan, courteous, and concise.
 2. Tools Discipline:
    - When users describe shirts, clubs, colors, or eras, ALWAYS call the 'search_jerseys' tool to ground your suggestions in authentic catalog items.
-   - When users want to add an item to their cart, ALWAYS call the 'add_to_cart' tool.
+   - When search_jerseys returns matches, provide an enthusiastic 1-2 sentence styling note or matchday context. The customer interface will automatically render high-resolution visual jersey cards directly on screen, so keep your text concise and avoid repeating raw specs.
+   - USER CONSENT CART RULE (CRITICAL): NEVER call the 'add_to_cart' tool without explicit user consent or command. When users are searching, browsing, or asking to view kits, DO NOT call 'add_to_cart'. Instead, after presenting the kits, politely ask if they would like you to add a specific kit in their size to their shopping bag.
+   - ONLY call 'add_to_cart' when the user EXPLICITLY instructs you to add an item (e.g., "Add this to cart", "Put size M in my bag", "Yes, add the Juventus shirt") or confirms their permission. If the user wants to add an item but hasn't stated a size, ask for their preferred size first.
    - When users ask what is currently in their cart or ask for totals, ALWAYS call the 'get_cart_summary' tool.
    - When users ask about sizing or whether a shirt fits tight/loose, ALWAYS call the 'recommend_size' tool.
 3. Pricing & Numbers:
@@ -35,6 +47,38 @@ Guidelines:
     return new GoogleGenAI({
       apiKey: config.geminiApiKey || process.env.GEMINI_API_KEY || '',
     });
+  }
+
+  /**
+   * Calls Gemini with model fallback resilience in case of transient 503 spikes or deprecations
+   */
+  private static async callGeminiWithFallback(
+    ai: GoogleGenAI,
+    contents: unknown[],
+    systemInstruction: string,
+    tools: unknown[]
+  ) {
+    const models = [this.getPrimaryModel(), ...this.getFallbackModels()];
+    let lastError: unknown = null;
+
+    for (const model of models) {
+      try {
+        const response = await ai.models.generateContent({
+          model,
+          contents: contents as any,
+          config: {
+            systemInstruction,
+            tools: [{ functionDeclarations: tools as any }],
+          },
+        });
+        return response;
+      } catch (err: unknown) {
+        lastError = err;
+        logger.warn({ err, model }, '[AIService] Model call failed, attempting fallback');
+      }
+    }
+
+    throw lastError || new Error('All Gemini model fallbacks failed');
   }
 
   /**
@@ -67,15 +111,13 @@ Guidelines:
       while (loopCount < maxLoops) {
         loopCount++;
 
-        // 3. Call Gemini with function calling tools enabled
-        const response = await ai.models.generateContent({
-          model: this.MODEL_NAME,
-          contents: workingHistory as any,
-          config: {
-            systemInstruction: this.SYSTEM_INSTRUCTION,
-            tools: [{ functionDeclarations: geminiToolDeclarations }],
-          },
-        });
+        // 3. Call Gemini with function calling tools enabled & fallback resilience
+        const response = await this.callGeminiWithFallback(
+          ai,
+          workingHistory,
+          this.SYSTEM_INSTRUCTION,
+          geminiToolDeclarations
+        );
 
         const candidate = response.candidates?.[0];
         if (!candidate || !candidate.content) {
@@ -87,21 +129,8 @@ Guidelines:
 
         // If the model produced tool calls
         if (functionCalls && functionCalls.length > 0) {
-          // Record model turn with function calls into history
-          workingHistory.push({
-            role: 'model',
-            parts: parts.map((p) => {
-              if (p.functionCall) {
-                return {
-                  functionCall: {
-                    name: p.functionCall.name || '',
-                    args: (p.functionCall.args as Record<string, unknown>) || {},
-                  },
-                };
-              }
-              return { text: p.text || '' };
-            }),
-          });
+          // Record model turn with function calls into history (preserving thoughtSignature & all metadata)
+          workingHistory.push(candidate.content as ChatMessage);
 
           // Execute each tool call and collect results
           const toolResponseParts: Array<{
@@ -158,10 +187,7 @@ Guidelines:
           callbacks.onChunk?.(textContent);
         }
 
-        workingHistory.push({
-          role: 'model',
-          parts: [{ text: textContent }],
-        });
+        workingHistory.push(candidate.content as ChatMessage);
 
         // Break loop as model finished its response
         break;

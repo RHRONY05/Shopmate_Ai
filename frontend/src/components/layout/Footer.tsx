@@ -144,11 +144,10 @@ export const Footer: React.FC = () => {
             About The KitRoom
           </h4>
           <p className="text-xs text-neutral-400 leading-relaxed">
-            The KitRoom is an autonomous football kit shopping platform powered by pgvector semantic intelligence,
-            real-time LLM function calling, and Stripe Payments.
+            The KitRoom is the premier curated football kit destination, connecting fans with authentic club matchday shirts, custom player printing, and an intelligent AI stylist.
           </p>
           <div className="mt-4 flex items-center gap-2 text-xs font-mono text-neutral-500">
-            <span>Server: Express 5 + PostgreSQL 16</span>
+            <span>Official European Club Kits</span>
           </div>
         </div>
       </div>

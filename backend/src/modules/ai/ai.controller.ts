@@ -82,6 +82,7 @@ export async function streamAIChatHandler(req: Request, res: Response) {
       },
       onError: (err) => {
         sendSSE('error', {
+          error: err.message || 'An error occurred during AI processing',
           message: err.message || 'An error occurred during AI processing',
         });
         if (isConnected) {
@@ -92,7 +93,10 @@ export async function streamAIChatHandler(req: Request, res: Response) {
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : 'Internal streaming error';
     logger.error({ err, sessionId }, '[AIChatController] Unhandled error in stream handler');
-    sendSSE('error', { message: errorMsg });
+    sendSSE('error', {
+      error: errorMsg,
+      message: errorMsg,
+    });
     if (isConnected) {
       res.end();
     }

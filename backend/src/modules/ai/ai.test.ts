@@ -199,6 +199,59 @@ describe('AI Shopping Agent Engine Integration Tests', () => {
       const empty = await AIMemoryService.getSessionHistory(testSessionId);
       expect(empty).toEqual([]);
     });
+
+    it('sanitizes corrupted history starting with orphaned functionResponse', () => {
+      const corrupted = [
+        {
+          role: 'user' as const,
+          parts: [{ functionResponse: { name: 'search_jerseys', response: { count: 1 } } }],
+        },
+        {
+          role: 'model' as const,
+          parts: [{ text: 'Here are the kits' }],
+        },
+        {
+          role: 'user' as const,
+          parts: [{ text: 'Recommend size for 180cm' }],
+        },
+        {
+          role: 'model' as const,
+          parts: [{ functionCall: { name: 'recommend_size', args: {} } }],
+        },
+        {
+          role: 'user' as const,
+          parts: [{ functionResponse: { name: 'recommend_size', response: { size: 'L' } } }],
+        },
+        {
+          role: 'model' as const,
+          parts: [{ text: 'We recommend size L' }],
+        },
+      ];
+
+      const cleaned = AIMemoryService.sanitizeHistory(corrupted, 10);
+      expect(cleaned.length).toBe(4);
+      expect(cleaned[0].parts[0].text).toBe('Recommend size for 180cm');
+      expect(cleaned[1].parts[0].functionCall?.name).toBe('recommend_size');
+      expect(cleaned[2].parts[0].functionResponse?.name).toBe('recommend_size');
+      expect(cleaned[3].parts[0].text).toBe('We recommend size L');
+    });
+
+    it('prunes dangling functionCall at the end of history', () => {
+      const dangling = [
+        {
+          role: 'user' as const,
+          parts: [{ text: 'Find away jerseys' }],
+        },
+        {
+          role: 'model' as const,
+          parts: [{ functionCall: { name: 'search_jerseys', args: {} } }],
+        },
+      ];
+
+      const cleaned = AIMemoryService.sanitizeHistory(dangling, 10);
+      expect(cleaned.length).toBe(1);
+      expect(cleaned[0].parts[0].text).toBe('Find away jerseys');
+    });
   });
 
   describe('3. POST /api/ai/chat SSE Streaming Controller', () => {

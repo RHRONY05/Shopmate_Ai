@@ -279,6 +279,7 @@ export const JerseyDetailPage: React.FC = () => {
                   </span>
                   <button
                     onClick={() => dispatch(openCopilot())}
+                    data-copilot-trigger="true"
                     className="text-xs text-[var(--accent-primary)] hover:underline flex items-center gap-1 cursor-pointer font-medium"
                   >
                     <Bot className="w-3.5 h-3.5" />

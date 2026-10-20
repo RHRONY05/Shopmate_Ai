@@ -5,7 +5,7 @@
 > **Status:** 🎉 **COMPLETE — ALL PHASES (0 THROUGH 7) IMPLEMENTED & POLISHED**  
 > **Test Coverage:** 84/84 Automated Tests Passing (Backend: 67, Frontend: 17) + 6/6 End-to-End System Integration Flow Passing.  
 > **Production Builds:** Both Backend (`tsc`) and Frontend (`vite build` with code splitting) Compiling with 0 Errors.  
-> **Active Polish:** Logo Option 1 ("Matchday Heritage Crest") wired into Header, Favicon, and Authenticity Certificate; Hero kit image dynamically bound to authentic catalog; Official TheSportsDB Big 4 League badges deployed universally across navigation, headers, catalog filters, breadcrumbs, kit cards, and footer directory; Mobile navigation normalized.  
+> **Active Polish:** Logo Option 1 ("Matchday Heritage Crest") wired into Header, Favicon, and Authenticity Certificate; Hero Section completely redesigned using Visual Hierarchy & 3-Jersey Straight Overlap (Manchester City 125th Anniv left, Juventus Half-and-Half Split center, Arsenal Authentic right) with split typography ("AUTHENTIC FOOTBALL KITS", "SHOP", "COLLECT"); Official TheSportsDB Big 4 League badges deployed universally; Mobile navigation normalized; KitBot operates as a non-blocking floating chat window with minimize dock; Removed bottom pop-up in favor of direct Catalog grid rendering with AI badges; High-visibility real-time working animation with dynamic text during pgvector queries; Eliminated empty assistant draft bubble and solitary blinking cursor dot.  
 > **Local Services:** Backend running on `http://localhost:5000`, Frontend running on `http://localhost:5173`.  
 
 ---
@@ -65,8 +65,9 @@
 - [x] 4.1 Implement `pgvector` Semantic Search Service with parameterized cosine distance (`<=>`) queries
 - [x] 4.2 **AI Function Calling Deep-Dive:** Learn how LLMs trigger external tools with Zod schema validation (`search_jerseys`, `add_to_cart`, `get_cart_summary`, `recommend_size`)
 - [x] 4.3 **SSE Streaming Deep-Dive:** Learn why SSE is used over WebSockets for AI chat, implement streaming controller (`POST /api/ai/chat`)
-- [x] 4.4 **Redis in Action:** Wire LLM tool execution loop with Redis multi-turn session conversation memory and TTL expiration
+- [x] 4.4 **Redis in Action:** Wire LLM tool execution loop with Redis multi-turn session conversation memory and TTL expiration (with safe turn-boundary sanitization)
 - [x] 4.5 Write comprehensive integration tests for AI agent tool execution and streaming response
+- [x] 4.6 Configure environment-driven Gemini model hierarchy (`gemini-3.6-flash` primary with `gemini-3.5-flash`/`gemini-3.5-flash-lite` fallbacks)
 
 ---
 
@@ -76,7 +77,7 @@
 - [x] 5.1 Establish kitroom design tokens in `index.css` (Stadium Matchday & Pitch Emerald, Cinzel + Lusitana Serif)
 - [x] 5.2 **Redux Toolkit Setup:** Configure typed store, create `cartSlice` and `copilotSlice` with typed actions and selectors
 - [x] 5.3 Build Global Navigation Shell (Header, League MegaMenu, Search bar trigger, Redux cart badge, Clerk Auth modal)
-- [x] 5.4 Build persistent slide-out AI KitBot Copilot Drawer with streaming message bubble renderer
+- [x] 5.4 Build floating AI KitBot Copilot window (click-outside/Escape dismiss, customer-focused microcopy, streaming message bubble renderer)
 - [x] 5.5 **Web Speech API Deep-Dive:** Integrate Voice-to-Text mic input (`SpeechRecognition`) and Speech Synthesis toggle (`speechSynthesis` TTS)
 - [x] 5.6 Build Quick Mini-Cart slide-over tray connected to Redux store with optimistic updates
 

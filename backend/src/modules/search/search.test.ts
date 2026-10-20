@@ -140,7 +140,7 @@ describe('Search Module - Semantic pgvector Search Integration Tests', () => {
     expect(topMatch.league).toBe('Premier League');
     expect(topMatch.basePrice).toBe(85);
     expect(topMatch.similarity).toBeGreaterThan(0.9);
-    expect(topMatch.availableSizes).toEqual([
+    expect(topMatch.availableSizes).toMatchObject([
       { size: 'M', stockQuantity: 8 },
       { size: 'L', stockQuantity: 4 },
     ]);

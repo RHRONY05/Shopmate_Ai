@@ -30,7 +30,7 @@ export interface SemanticSearchResult {
   clubName: string;
   league: string;
   similarity: number;
-  availableSizes: Array<{ size: string; stockQuantity: number }>;
+  availableSizes: Array<{ id?: string; size: string; stockQuantity: number }>;
 }
 
 export class EmbeddingService {
@@ -187,6 +187,7 @@ export class EmbeddingService {
         stockQuantity: { gt: 0 },
       },
       select: {
+        id: true,
         jerseyId: true,
         size: true,
         stockQuantity: true,
@@ -194,10 +195,10 @@ export class EmbeddingService {
       orderBy: { size: 'asc' },
     });
 
-    const variantsMap = new Map<string, Array<{ size: string; stockQuantity: number }>>();
+    const variantsMap = new Map<string, Array<{ id: string; size: string; stockQuantity: number }>>();
     for (const v of variants) {
       const list = variantsMap.get(v.jerseyId) || [];
-      list.push({ size: v.size, stockQuantity: v.stockQuantity });
+      list.push({ id: v.id, size: v.size, stockQuantity: v.stockQuantity });
       variantsMap.set(v.jerseyId, list);
     }
 

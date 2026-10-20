@@ -47,7 +47,7 @@ export const geminiToolDeclarations: FunctionDeclaration[] = [
   {
     name: 'add_to_cart',
     description:
-      'Add an authentic football jersey to the customer shopping cart with specified size, optional official badge, and custom player name/number printing.',
+      'Add an authentic football jersey to the customer shopping bag with specified size, optional official badge, and custom player name/number printing. STRICT RULE: Call this tool ONLY when the user EXPLICITLY commands or consents to adding an item to their cart (e.g., "Add to cart", "Put size L in my bag", "Yes, please add it"). NEVER call this tool proactively, automatically, or during browsing/searching when the user has only asked to see or find kits.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -135,6 +135,8 @@ export async function executeSearchJerseys(rawArgs: Record<string, unknown>) {
     jerseys: results.map((j) => ({
       id: j.id,
       title: j.title,
+      slug: j.slug,
+      description: j.description,
       club: j.clubName,
       league: j.league,
       kitType: j.kitType,

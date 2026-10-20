@@ -9,6 +9,8 @@ interface Config {
   databaseUrl: string;
   redisUrl: string;
   geminiApiKey: string;
+  geminiModel: string;
+  geminiFallbackModels: string[];
   stripe: {
     secretKey: string;
     webhookSecret: string;
@@ -34,6 +36,10 @@ export const config: Config = {
   databaseUrl: getEnvOrThrow('DATABASE_URL'),
   redisUrl: getEnvOrThrow('REDIS_URL'),
   geminiApiKey: process.env.GEMINI_API_KEY || '',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.6-flash',
+  geminiFallbackModels: process.env.GEMINI_FALLBACK_MODELS
+    ? process.env.GEMINI_FALLBACK_MODELS.split(',').map((s) => s.trim()).filter(Boolean)
+    : ['gemini-3.5-flash', 'gemini-3.5-flash-lite'],
   stripe: {
     secretKey: process.env.STRIPE_SECRET_KEY || '',
     webhookSecret: process.env.STRIPE_WEBHOOK_SECRET || '',

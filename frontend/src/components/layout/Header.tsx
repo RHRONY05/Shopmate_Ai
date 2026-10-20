@@ -186,6 +186,7 @@ export const Header: React.FC = () => {
             {/* AI KitBot Copilot Drawer Trigger */}
             <button
               onClick={() => dispatch(toggleCopilot())}
+              data-copilot-trigger="true"
               className={`flex items-center gap-1.5 sm:gap-2 p-2 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-semibold transition-all border shrink-0 ${
                 isCopilotOpen
                   ? 'bg-[var(--accent-primary)] text-white border-[var(--accent-primary)] shadow-sm'
