@@ -278,6 +278,126 @@ export class PaymentService {
 
     return { eventId, status: 'processed', eventType: event.type };
   }
+
+  /**
+   * Retrieves an order by ID, orderNumber, or Stripe PaymentIntent ID
+   */
+  async getOrderById(orderIdOrNumber: string) {
+    const order = await prisma.order.findFirst({
+      where: {
+        OR: [
+          { id: orderIdOrNumber },
+          { orderNumber: orderIdOrNumber },
+          { stripePaymentIntentId: orderIdOrNumber },
+        ],
+      },
+      include: {
+        items: {
+          include: {
+            jerseyVariant: {
+              include: {
+                jersey: {
+                  include: {
+                    club: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!order) {
+      throw new ApiError(404, `Order '${orderIdOrNumber}' not found`);
+    }
+
+    return order;
+  }
+
+  /**
+   * Retrieves order history for a logged in user or guest email
+   */
+  async getUserOrders(userId?: string, guestEmail?: string) {
+    if (!userId && !guestEmail) {
+      return [];
+    }
+
+    const conditions = [];
+    if (userId) conditions.push({ userId });
+    if (guestEmail) conditions.push({ guestEmail });
+
+    return prisma.order.findMany({
+      where: {
+        OR: conditions,
+      },
+      include: {
+        items: {
+          include: {
+            jerseyVariant: {
+              include: {
+                jersey: {
+                  include: {
+                    club: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  /**
+   * Directly confirms an order from a verified client-side Stripe payment confirmation
+   * for local development and seamless browser checkout testing
+   */
+  async confirmOrderFromClient(paymentIntentId: string) {
+    const existing = await prisma.order.findUnique({
+      where: { stripePaymentIntentId: paymentIntentId },
+      include: {
+        items: {
+          include: {
+            jerseyVariant: {
+              include: {
+                jersey: {
+                  include: {
+                    club: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    if (existing) return existing;
+
+    // Retrieve PaymentIntent from Stripe
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    if (!paymentIntent || paymentIntent.status !== 'succeeded') {
+      throw new ApiError(400, 'Stripe PaymentIntent is not yet in succeeded status');
+    }
+
+    const syntheticEvent: Stripe.Event = {
+      id: `evt_client_confirm_${paymentIntentId}`,
+      object: 'event',
+      api_version: '2025-01-27.acacia' as any,
+      created: Math.floor(Date.now() / 1000),
+      type: 'payment_intent.succeeded',
+      data: {
+        object: paymentIntent,
+      },
+      livemode: false,
+      pending_webhooks: 0,
+      request: null,
+    };
+
+    await this.handleStripeWebhookEvent(syntheticEvent);
+    return this.getOrderById(paymentIntentId);
+  }
 }
 
 export const paymentService = new PaymentService();

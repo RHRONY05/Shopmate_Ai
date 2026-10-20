@@ -13,6 +13,7 @@
     "db:embeddings": "tsx src/scripts/syncEmbeddings.ts",
     "db:hnsw": "tsx src/scripts/setupHnswIndex.ts",
     "test:search": "tsx src/scripts/testSearch.ts",
+    "test:e2e": "tsx src/scripts/testEndToEndFlow.ts",
     "pretest": "dotenv -e .env.test -- prisma db push",
     "test": "dotenv -e .env.test -- vitest run"
   },

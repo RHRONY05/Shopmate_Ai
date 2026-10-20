@@ -47,3 +47,48 @@ export const handleStripeWebhook = asyncHandler(async (req: Request, res: Respon
     new ApiResponse(200, result, 'Stripe webhook event processed successfully')
   );
 });
+
+/**
+ * GET /api/orders/:orderId
+ * Retrieves order details by orderId or orderNumber
+ */
+export const getOrder = asyncHandler(async (req: Request, res: Response) => {
+  const orderId = req.params.orderId as string;
+  const order = await paymentService.getOrderById(orderId);
+
+  res.status(200).json(
+    new ApiResponse(200, order, 'Order details retrieved successfully')
+  );
+});
+
+/**
+ * GET /api/orders
+ * Retrieves list of orders for the authenticated user or guest email
+ */
+export const getUserOrders = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id || (req.headers['x-user-id'] as string) || undefined;
+  const guestEmail = (req.query.email as string) || undefined;
+
+  const orders = await paymentService.getUserOrders(userId, guestEmail);
+
+  res.status(200).json(
+    new ApiResponse(200, orders, 'User orders retrieved successfully')
+  );
+});
+
+/**
+ * POST /api/payments/confirm
+ * Client-side fallback to confirm order directly after Stripe Elements payment completion
+ */
+export const confirmClientPayment = asyncHandler(async (req: Request, res: Response) => {
+  const { paymentIntentId } = req.body;
+  if (!paymentIntentId) {
+    throw new ApiError(400, 'paymentIntentId is required');
+  }
+
+  const order = await paymentService.confirmOrderFromClient(paymentIntentId);
+
+  res.status(200).json(
+    new ApiResponse(200, order, 'Payment confirmed and order created successfully')
+  );
+});

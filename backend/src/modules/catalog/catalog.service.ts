@@ -23,9 +23,11 @@ export class CatalogService {
   async getJerseys(query: GetJerseysQuery) {
     const {
       clubId,
+      clubSlug,
       league,
       kitType,
       era,
+      size,
       minPrice,
       maxPrice,
       isFeatured,
@@ -42,8 +44,11 @@ export class CatalogService {
       where.clubId = clubId;
     }
 
-    if (league) {
-      where.club = { league };
+    if (clubSlug || league) {
+      where.club = {
+        ...(league ? { league } : {}),
+        ...(clubSlug ? { slug: clubSlug } : {}),
+      };
     }
 
     if (kitType) {
@@ -52,6 +57,15 @@ export class CatalogService {
 
     if (era) {
       where.era = era;
+    }
+
+    if (size) {
+      where.variants = {
+        some: {
+          size,
+          stockQuantity: { gt: 0 },
+        },
+      };
     }
 
     if (isFeatured !== undefined) {
