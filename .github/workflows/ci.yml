@@ -79,13 +79,19 @@ jobs:
 
       # Frontend Checks
       - name: Install Frontend Dependencies
-        run: npm ci --legacy-peer-deps --prefix frontend
+        working-directory: frontend
+        run: |
+          npm ci --legacy-peer-deps
+          ROLLUP_VER=$(node -p "require('./node_modules/rollup/package.json').version")
+          npm install --no-save @rollup/rollup-linux-x64-gnu@$ROLLUP_VER
 
       - name: Run Frontend Vitest Test Suite
-        run: npm run test --prefix frontend
+        working-directory: frontend
+        run: npm run test
 
       - name: Build Frontend Application
-        run: npm run build --prefix frontend
+        working-directory: frontend
+        run: npm run build
         env:
           VITE_API_BASE_URL: http://localhost:5000
           VITE_CLERK_PUBLISHABLE_KEY: pk_test_mock
