@@ -80,10 +80,7 @@ jobs:
       # Frontend Checks
       - name: Install Frontend Dependencies
         working-directory: frontend
-        run: |
-          npm ci --legacy-peer-deps
-          ROLLUP_VER=$(node -p "require('./node_modules/rollup/package.json').version")
-          npm install --no-save @rollup/rollup-linux-x64-gnu@$ROLLUP_VER
+        run: npm install --legacy-peer-deps
 
       - name: Run Frontend Vitest Test Suite
         working-directory: frontend
