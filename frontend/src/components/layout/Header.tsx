@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   ShoppingBag,
   Bot,
@@ -20,13 +20,35 @@ import { LeagueBadge } from '../common/LeagueBadge';
 export const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const cart = useAppSelector((state) => state.cart.cart);
   const isCopilotOpen = useAppSelector((state) => state.copilot.isOpen);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [leaguesOpen, setLeaguesOpen] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+  const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
 
+  const isHomePage = location.pathname === '/';
+
+  // Track scroll position to blend with hero slide when at top of homepage,
+  // and switch to transparent white when scrolled into other sections or on other pages
+  useEffect(() => {
+    if (!isHomePage) {
+      setIsScrolledPastHero(true);
+      return;
+    }
+
+    const handleScroll = () => {
+      setIsScrolledPastHero(window.scrollY > 420);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isHomePage]);
+
+  const isHeroActive = isHomePage && !isScrolledPastHero;
   const totalItemsCount = cart?.itemCount || 0;
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -62,7 +84,18 @@ export const Header: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[var(--border-subtle)] shadow-xs transition-all">
+    <header
+      className={`sticky top-0 z-40 backdrop-blur-md border-b transition-[background-color,border-color,box-shadow] duration-300 ease-out ${
+        isHeroActive
+          ? 'border-transparent shadow-none'
+          : 'border-black/5 shadow-xs'
+      }`}
+      style={{
+        backgroundColor: isHeroActive
+          ? 'var(--hero-navbar-bg)'
+          : 'rgba(255, 255, 255, 0.75)',
+      }}
+    >
       {/* 1. Top Banner: Matchday Heritage Assurance (Single line, no wrap) */}
       <div className="bg-[var(--text-primary)] text-[var(--bg-surface)] text-[11px] sm:text-xs py-1.5 px-3 sm:px-4 text-center font-medium tracking-wider uppercase flex items-center justify-center gap-1.5 whitespace-nowrap overflow-hidden">
         <ShieldCheck className="w-3.5 h-3.5 text-[var(--accent-primary)] shrink-0" />
@@ -178,7 +211,7 @@ export const Header: React.FC = () => {
                 placeholder="Search club, player, year..."
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                className="w-48 lg:w-64 pl-9 pr-3 py-1.5 text-xs rounded-full bg-[var(--bg-canvas)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:bg-white transition-all"
+                className="w-48 lg:w-64 pl-9 pr-3 py-1.5 text-xs rounded-full bg-white/60 hover:bg-white/80 border border-black/10 text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:bg-white transition-all shadow-2xs"
               />
               <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3 pointer-events-none" />
             </form>
@@ -190,7 +223,7 @@ export const Header: React.FC = () => {
               className={`flex items-center gap-1.5 sm:gap-2 p-2 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-semibold transition-all border shrink-0 ${
                 isCopilotOpen
                   ? 'bg-[var(--accent-primary)] text-white border-[var(--accent-primary)] shadow-sm'
-                  : 'bg-[var(--bg-canvas)] text-[var(--text-primary)] border-[var(--border-subtle)] hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)]'
+                  : 'bg-white/60 text-[var(--text-primary)] border-black/10 hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] hover:bg-white shadow-2xs'
               }`}
               title="Open AI KitBot Matchday Stylist"
               aria-label="Ask KitBot"
@@ -206,7 +239,7 @@ export const Header: React.FC = () => {
             {/* Mini-Cart Slide-Over Button */}
             <button
               onClick={() => dispatch(toggleCart())}
-              className="relative p-2 sm:p-2.5 rounded-full bg-[var(--bg-canvas)] text-[var(--text-primary)] hover:bg-[var(--bg-card-hover)] transition-all border border-[var(--border-subtle)] shrink-0"
+              className="relative p-2 sm:p-2.5 rounded-full bg-white/60 text-[var(--text-primary)] hover:bg-white transition-all border border-black/10 shrink-0 shadow-2xs"
               aria-label="Open Shopping Bag"
             >
               <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />

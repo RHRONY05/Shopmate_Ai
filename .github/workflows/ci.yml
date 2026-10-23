@@ -40,10 +40,10 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 20.x
+      - name: Setup Node.js 22.x
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       # Backend Checks
@@ -51,10 +51,12 @@ jobs:
         run: npm ci --prefix backend
 
       - name: Generate Prisma Client
-        run: npx prisma generate --prefix backend
+        working-directory: backend
+        run: npx prisma generate
 
       - name: Push Test Database Schema
-        run: npx prisma db push --prefix backend
+        working-directory: backend
+        run: npx prisma db push
         env:
           DATABASE_URL: postgresql://shopmate_user:shopmate_password@localhost:5432/shopmate_test_db?schema=public
 

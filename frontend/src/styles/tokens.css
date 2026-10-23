@@ -31,6 +31,7 @@
   --state-info:       #1D4ED8;
   --scrim:            rgba(8, 20, 11, 0.60);
   --shadow-color:     8 20 11;
+  --hero-navbar-bg:   rgb(236, 228, 249);
 
   /* ---- Typography -------------------------------------------------------- */
   --font-display: 'Cinzel', serif;

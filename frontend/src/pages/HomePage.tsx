@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Sparkles,
   ShoppingBag,
   ArrowRight,
   Award,
@@ -10,9 +9,10 @@ import {
 } from 'lucide-react';
 import { useAppDispatch } from '../store/hooks';
 import { addToCartThunk } from '../store/slices/cartSlice';
-import { openCopilot, openCopilotWithPrompt } from '../store/slices/copilotSlice';
+import { openCopilotWithPrompt } from '../store/slices/copilotSlice';
 import { fetchJerseys } from '../services/api';
 import { LeagueBadge } from '../components/common/LeagueBadge';
+import { HeroShowcaseCarousel } from '../components/home/HeroShowcaseCarousel';
 import type { Jersey } from '../types';
 
 export const HomePage: React.FC = () => {
@@ -21,36 +21,6 @@ export const HomePage: React.FC = () => {
 
   const [featuredKits, setFeaturedKits] = useState<Jersey[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  // 1. Center Focal Kit: Juventus 2019/20 Half-and-Half Split Home Shirt
-  const heroKit = featuredKits.find((k) => k.slug === 'juventus-home-2019-20') || {
-    slug: 'juventus-home-2019-20',
-    title: 'Juventus 19/20 Home',
-    images: ['https://r2.thesportsdb.com/images/media/team/equipment/2019-133676-Jersey.png'],
-  };
-  const heroImage = heroKit.images?.[0] || 'https://r2.thesportsdb.com/images/media/team/equipment/2019-133676-Jersey.png';
-  const heroTitle = 'Juventus 19/20 Home';
-  const heroSlug = 'juventus-home-2019-20';
-
-  // 2. Left Flanking Kit: Manchester City 2019/20 125th Anniversary Home Shirt
-  const leftKit = featuredKits.find((k) => k.slug === 'man-city-home-2019-20') || {
-    slug: 'man-city-home-2019-20',
-    title: 'Man City 19/20 Home',
-    images: ['https://r2.thesportsdb.com/images/media/team/equipment/2019-133613-Jersey.png'],
-  };
-  const leftImage = leftKit.images?.[0] || 'https://r2.thesportsdb.com/images/media/team/equipment/2019-133613-Jersey.png';
-  const leftTitle = 'Man City 19/20 Home';
-  const leftSlug = 'man-city-home-2019-20';
-
-  // 3. Right Flanking Kit: Arsenal 2019/20 Home Authentic Shirt
-  const rightKit = featuredKits.find((k) => k.slug === 'arsenal-home-2019-20') || {
-    slug: 'arsenal-home-2019-20',
-    title: 'Arsenal 19/20 Home',
-    images: ['https://r2.thesportsdb.com/images/media/team/equipment/2019-133604-Jersey.png'],
-  };
-  const rightImage = rightKit.images?.[0] || 'https://r2.thesportsdb.com/images/media/team/equipment/2019-133604-Jersey.png';
-  const rightTitle = 'Arsenal 19/20 Home';
-  const rightSlug = 'arsenal-home-2019-20';
 
   useEffect(() => {
     let isMounted = true;
@@ -99,156 +69,9 @@ export const HomePage: React.FC = () => {
 
   return (
     <main className="min-h-screen bg-[var(--bg-canvas)]">
-      {/* 1. Hero Matchday Spotlight — Open-Canvas Visual Hierarchy & Viewport-Fitted 3-Jersey Stage */}
-      <section className="relative w-full pt-1 sm:pt-3 pb-8 sm:pb-12 overflow-hidden">
-        {/* Stadium Floodlight Arc & Ambient Field Glow (Kept at the Top) */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] sm:w-[1300px] lg:w-[1600px] h-[320px] sm:h-[420px] bg-gradient-to-b from-emerald-500/10 via-emerald-500/3 to-transparent rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-4 sm:top-6 left-1/2 -translate-x-1/2 w-[850px] sm:w-[1200px] lg:w-[1500px] h-[300px] sm:h-[380px] border-t-2 border-emerald-500/15 rounded-[50%] pointer-events-none" />
-
-        {/* Content Wrapper (Reduced Side Margins & Compact Spacing) */}
-        <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
-          {/* Line 1: Primary Spanning Header (Commercial & Authentic Clarity) */}
-          <div className="text-center mb-2 sm:mb-3">
-            <h1 className="font-serif font-black text-3xl sm:text-5xl lg:text-6xl xl:text-7xl tracking-tight text-[var(--text-primary)] uppercase leading-none">
-              Authentic Football Kits
-            </h1>
-          </div>
-
-          {/* 3-Column Integrated Stage: Left Wing + Center Dominant Jersey + Right Wing */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
-            {/* Left Column (lg:col-span-4): SHOP + Wide Copy + CTA + Left Jersey */}
-            <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left space-y-2.5 order-2 lg:order-1">
-              <h2 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-[var(--text-primary)] uppercase tracking-tight leading-none">
-                Shop
-              </h2>
-              <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed max-w-md lg:max-w-none">
-                Curating authentic player-edition jerseys with official heat-sealed crests, jacquard breathable knits,
-                and in-house squad custom name &amp; number printing.
-              </p>
-              <div className="pt-0.5">
-                <Link
-                  to="/jerseys"
-                  className="px-5 py-2.5 rounded-full bg-[var(--accent-primary)] text-white font-serif font-bold text-xs sm:text-sm hover:bg-[var(--btn-hover)] transition-all shadow-md flex items-center gap-2 group cursor-pointer inline-flex"
-                >
-                  <span>Explore Collection</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-
-              {/* Left Flanking Jersey (Manchester City 19/20 - Straight, Closer to Center) */}
-              <div className="pt-3 sm:pt-4 w-full flex justify-center lg:justify-end lg:translate-x-6 xl:translate-x-10">
-                <Link
-                  to={`/jerseys/${leftSlug}`}
-                  className="group/left block transition-all duration-300 hover:scale-105"
-                  title={leftTitle}
-                >
-                  <div className="relative">
-                    <img
-                      src={leftImage}
-                      alt={leftTitle}
-                      className="w-44 sm:w-56 lg:w-64 xl:w-72 max-h-[300px] sm:max-h-[340px] h-auto object-contain drop-shadow-xl transition-transform duration-300"
-                    />
-                    {/* Transparent Tag Overlay on Bottom of Jersey Fabric */}
-                    <div className="absolute bottom-10 sm:bottom-12 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-                      <span className="inline-block px-3 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-[10px] sm:text-[11px] font-mono font-medium text-white shadow-md whitespace-nowrap">
-                        {leftTitle}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            </div>
-
-            {/* Center Column (lg:col-span-4): Towering Centerpiece Jersey (Juventus Split - Pushed Down Comfortably) */}
-            <div className="lg:col-span-4 flex flex-col items-center relative z-20 order-1 lg:order-2 my-2 lg:my-0 lg:mt-3 xl:mt-5">
-              <Link
-                to={`/jerseys/${heroSlug}`}
-                className="block transition-transform duration-500 group-hover/center:scale-105 group/center"
-                title={`Spotlight: ${heroTitle}`}
-              >
-                <div className="relative flex flex-col items-center">
-                  {/* Center Jersey Image (Dominant Scale & Fits Viewport) */}
-                  <img
-                    src={heroImage}
-                    alt={heroTitle}
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src =
-                        'https://r2.thesportsdb.com/images/media/team/equipment/2019-133676-Jersey.png';
-                    }}
-                    className="w-52 sm:w-72 md:w-80 lg:w-[360px] xl:w-[410px] max-h-[360px] sm:max-h-[410px] h-auto object-contain drop-shadow-2xl"
-                  />
-
-                  {/* Transparent Tag Overlay on Bottom of Center Jersey Fabric */}
-                  <div className="absolute bottom-10 sm:bottom-12 md:bottom-14 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/25 text-[11px] sm:text-xs font-mono font-medium text-white shadow-xl whitespace-nowrap">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>{heroTitle}</span>
-                    </span>
-                  </div>
-
-                  {/* Grounding Radial Shadow */}
-                  <div className="w-44 sm:w-60 h-5 bg-black/15 blur-lg rounded-full mt-1" />
-                </div>
-              </Link>
-            </div>
-
-            {/* Right Column (lg:col-span-4): COLLECT + Wide Copy + CTA + Right Jersey */}
-            <div className="lg:col-span-4 flex flex-col items-center lg:items-end text-center lg:text-right space-y-2.5 order-3">
-              <h2 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-[var(--text-primary)] uppercase tracking-tight leading-none">
-                Collect
-              </h2>
-              <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed max-w-md lg:max-w-none">
-                Ask our AI KitBot matchday stylist for historical match stats, squad number lookups, and real-time custom
-                sleeve patch rendering.
-              </p>
-              <div className="pt-0.5">
-                <button
-                  onClick={() => dispatch(openCopilot())}
-                  data-copilot-trigger="true"
-                  className="px-5 py-2.5 rounded-full bg-white text-[var(--text-primary)] font-serif font-bold text-xs sm:text-sm hover:bg-[var(--bg-card-hover)] transition-all border border-[var(--border-subtle)] flex items-center gap-2 cursor-pointer inline-flex shadow-xs"
-                >
-                  <Sparkles className="w-4 h-4 text-[var(--accent-primary)]" />
-                  <span>Ask AI KitBot</span>
-                </button>
-              </div>
-
-              {/* Right Flanking Jersey (Arsenal 19/20 - Straight, Closer to Center) */}
-              <div className="pt-3 sm:pt-4 w-full flex justify-center lg:justify-start lg:-translate-x-6 xl:-translate-x-10">
-                <Link
-                  to={`/jerseys/${rightSlug}`}
-                  className="group/right block transition-all duration-300 hover:scale-105"
-                  title={rightTitle}
-                >
-                  <div className="relative">
-                    <img
-                      src={rightImage}
-                      alt={rightTitle}
-                      className="w-44 sm:w-56 lg:w-64 xl:w-72 max-h-[300px] sm:max-h-[340px] h-auto object-contain drop-shadow-xl transition-transform duration-300"
-                    />
-                    {/* Transparent Tag Overlay on Bottom of Jersey Fabric */}
-                    <div className="absolute bottom-10 sm:bottom-12 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-                      <span className="inline-block px-3 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-[10px] sm:text-[11px] font-mono font-medium text-white shadow-md whitespace-nowrap">
-                        {rightTitle}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Trust & Stock Indicators */}
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 pt-5 mt-4 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] font-mono relative z-10 max-w-5xl mx-auto">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>24 Authentic Kits in Stock</span>
-            </div>
-            <div className="hidden sm:inline text-neutral-300">•</div>
-            <div>120 Size Variants (S–XXL)</div>
-            <div className="hidden sm:inline text-neutral-300">•</div>
-            <div>100% Serial Verified Matchday Authenticity</div>
-          </div>
-        </div>
+      {/* 1. Hero Matchday Spotlight — Continuous 4-Slide Kit Showcase with 3D Depth */}
+      <section className="relative w-full overflow-hidden">
+        <HeroShowcaseCarousel catalogJerseys={featuredKits} />
       </section>
 
       {/* 2. AI Voice & Semantic Query Bar */}
