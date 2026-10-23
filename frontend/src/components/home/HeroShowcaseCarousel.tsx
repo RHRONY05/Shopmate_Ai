@@ -135,8 +135,6 @@ export const HeroShowcaseCarousel: React.FC<HeroShowcaseCarouselProps> = ({ cata
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const progressIntervalRef = useRef<number | null>(null);
 
   // Swipe / Drag States
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -153,38 +151,24 @@ export const HeroShowcaseCarousel: React.FC<HeroShowcaseCarouselProps> = ({ cata
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % SHOWCASE_SLIDES.length);
-    setProgress(0);
   }, []);
 
   const prevSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + SHOWCASE_SLIDES.length) % SHOWCASE_SLIDES.length);
-    setProgress(0);
   }, []);
 
-  // Continuous auto-rotation with progress timer
+  // Sequential continuous auto-rotation (1 -> 2 -> 3 -> 4 -> 1)
   useEffect(() => {
-    if (isPaused) {
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-      return;
-    }
+    if (isPaused) return;
 
-    const stepMs = 50;
-    const progressStep = (stepMs / AUTOPLAY_DURATION_MS) * 100;
-
-    progressIntervalRef.current = window.setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          nextSlide();
-          return 0;
-        }
-        return prev + progressStep;
-      });
-    }, stepMs);
+    const timer = window.setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % SHOWCASE_SLIDES.length);
+    }, AUTOPLAY_DURATION_MS);
 
     return () => {
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      window.clearInterval(timer);
     };
-  }, [isPaused, nextSlide]);
+  }, [isPaused, currentIndex]);
 
   // Touch Swipe Handlers
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -437,15 +421,12 @@ export const HeroShowcaseCarousel: React.FC<HeroShowcaseCarouselProps> = ({ cata
               <button
                 key={idx}
                 type="button"
-                onClick={() => {
-                  setCurrentIndex(idx);
-                  setProgress(0);
-                }}
+                onClick={() => setCurrentIndex(idx)}
                 className="py-1 px-0.5 cursor-pointer focus:outline-none"
                 title={`Go to slide ${idx + 1}`}
               >
                 <div
-                  className={`h-1 rounded-full transition-all duration-200 overflow-hidden ${
+                  className={`h-1 rounded-full transition-all duration-300 overflow-hidden ${
                     isActive
                       ? 'w-10 bg-black/10 relative'
                       : 'w-3 bg-[var(--border-subtle)] hover:bg-[var(--text-muted)]'
@@ -453,8 +434,13 @@ export const HeroShowcaseCarousel: React.FC<HeroShowcaseCarouselProps> = ({ cata
                 >
                   {isActive && (
                     <div
-                      className="h-full bg-[var(--accent-primary)] rounded-full transition-all duration-100 ease-linear"
-                      style={{ width: `${Math.min(100, Math.max(10, progress))}%` }}
+                      key={`progress-${currentIndex}`}
+                      className="h-full bg-[var(--accent-primary)] rounded-full"
+                      style={{
+                        animation: isPaused
+                          ? 'none'
+                          : `slideProgress ${AUTOPLAY_DURATION_MS}ms linear forwards`,
+                      }}
                     />
                   )}
                 </div>
